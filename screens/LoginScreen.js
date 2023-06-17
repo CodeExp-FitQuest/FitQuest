@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -13,9 +14,10 @@ const LoginPage = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>FitQuest</Text>
-      <Text style={styles.subheader}>Earn rewards while working out</Text>
-
+      <View style={styles.subcontainer}>
+        <Text style={styles.header}>FitQuest</Text>
+        <Text style={styles.subheader}>Earn rewards while working out</Text>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("hometab")}
@@ -28,12 +30,30 @@ const LoginPage = () => {
       </View>
 
       <View style={styles.socialMediaIcons}>
-        <View style={styles.iconContainer}>{/* Facebook Icon */}</View>
-        <View style={styles.iconContainer}>{/* Google Icon */}</View>
-        <View style={styles.iconContainer}>{/* Twitter Icon */}</View>
+        <View style={styles.iconContainer}>
+          <Image
+            style={{ width: 50, height: 50 }}
+            source={require(".././assets/Facebook-logo.png")}
+          />
+        </View>
+        <View style={styles.iconContainer}>
+          <Image
+            style={{ width: 60, height: 60 }}
+            source={require(".././assets/google.png")}
+          />
+        </View>
+        <View style={styles.iconContainer}>
+          <Image
+            style={{ width: 40, height: 40 }}
+            source={require(".././assets/twitter.png")}
+          />
+        </View>
       </View>
 
-      <TouchableOpacity style={styles.signUpLink}>
+      <TouchableOpacity
+        style={styles.signUpLink}
+        onPress={() => navigation.navigate("signup")}
+      >
         <Text style={styles.signUpLinkText}>
           Don't have an account? Sign Up
         </Text>
@@ -49,16 +69,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  subcontainer: {
+    position: "absolute",
+    top: 130,
+  },
   header: {
-    fontSize: 24,
+    fontSize: 65,
     fontWeight: "bold",
     color: "white",
     marginBottom: 10,
   },
   subheader: {
-    fontSize: 16,
+    fontSize: 17,
     color: "white",
     marginBottom: 20,
+    fontWeight: "bold",
   },
   button: {
     height: 70,
@@ -74,7 +99,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     textAlign: "center",
-    fontSize: 25
+    fontSize: 25,
   },
   separator: {
     flexDirection: "row",
@@ -84,24 +109,27 @@ const styles = StyleSheet.create({
   },
   separatorText: {
     color: "white",
+    fontSize: 20,
     paddingHorizontal: 10,
+    position: "absolute",
+    top: 120
   },
   socialMediaIcons: {
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 20,
-  
+    position: "absolute",
+    bottom: 100,
   },
   iconContainer: {
-    width: 90,
-    height: 90,
+    width: 80,
+    height: 80,
     borderRadius: 50,
     backgroundColor: "white",
     marginTop: 80,
     marginHorizontal: 18,
     justifyContent: "center",
     alignItems: "center",
-
   },
   signUpLink: {
     position: "absolute",
@@ -110,6 +138,7 @@ const styles = StyleSheet.create({
   signUpLinkText: {
     color: "white",
     textDecorationLine: "underline",
+    marginBottom: 20,
   },
 });
 

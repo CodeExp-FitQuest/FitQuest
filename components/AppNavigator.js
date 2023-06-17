@@ -26,6 +26,7 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+<<<<<<< HEAD
         name="profile"
         component={Screens.ProfileScreen}
         options={{ 
@@ -34,6 +35,11 @@ const AppNavigator = () => {
           headerLeft: () => <BackArrowNavigator page={"hometab"}/>,
           headerTransparent: true,
         }}
+=======
+        name="signup"
+        component={Screens.SignupScreen}
+        options={{ headerShown: false }}
+>>>>>>> 8e147682 (Enhance ui for login page)
       />
     </Stack.Navigator>
   );
