@@ -66,7 +66,6 @@ const SitUpPage = ({ navigation }) => {
     const initialTimeInSeconds = initialMinutes.current * 60 + initialSeconds.current;
     const endTimeInSeconds = minutes * 60 + seconds;
     const timeDifferenceInSeconds = initialTimeInSeconds - endTimeInSeconds;
-    console.log(timeDifferenceInSeconds);
   
     const minutesDifference = Math.floor(timeDifferenceInSeconds / 60);
     const secondsDifference = timeDifferenceInSeconds % 60;
@@ -78,27 +77,6 @@ const SitUpPage = ({ navigation }) => {
         ${secondsDifference < 10 ? `0${secondsDifference}` : secondsDifference} seconds
       `;
   };
-
-  // const getRunningTime = () => {
-  //   const runningMinutes = initialMinutes.current - minutes;
-  //   const runningSeconds = seconds ? 60 - seconds : 0;
-
-  //   const minutesString = runningMinutes
-  //     ? runningMinutes < 10 
-  //       ? `0${runningMinutes}` 
-  //       : runningMinutes
-  //     : "";
-    
-  //   const secondsString = runningSeconds
-  //     ? runningSeconds < 10 
-  //       ? `0${runningSeconds}` 
-  //       : runningSeconds
-  //     : "00";
-
-  //   return runningMinutes 
-  //     ? `${minutesString} minutes ${secondsString} seconds`
-  //     : `${secondsString} seconds`;
-  // }
 
   return (
     <View style={styles.container}>
