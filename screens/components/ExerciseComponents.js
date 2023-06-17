@@ -16,13 +16,26 @@ export const CountDownToExercise = ({countDown}) =>
     <Text style={styles.countDownNumber}>{countDown}</Text>
   </View>
 
-export const ExerciseCountDown = ({timer, handleFinish}) => 
+export const ExerciseCountDown = ({minutes, seconds, handleFinish}) => 
   <>
-    <Text style={styles.timerText}>{timer}</Text>
+    <Text style={styles.timerText}>
+      {minutes
+        ? (`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`)
+        : seconds
+      }
+    </Text>
     <TouchableOpacity style={styles.finishButton} onPress={handleFinish}>
       <Text style={styles.buttonText}>Finish</Text>
     </TouchableOpacity>
   </>
+
+export const ExerciseSummary = ({summary, handleComplete}) => 
+  <View style={styles.summaryContainer}>
+    <Text style={styles.summaryText}>{summary}</Text>
+    <TouchableOpacity style={styles.completeButton} onPress={handleComplete}>
+      <Text style={styles.buttonText}>Complete</Text>
+    </TouchableOpacity>
+  </View>
 
 export const ExerciseComplete = ({handleComplete, prompt}) => {
   const [count, setCount] = useState('');
@@ -99,6 +112,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     backgroundColor: '#FFFFFF',
+  },
+  summaryContainer: {
+    alignItems: 'center',
+  },
+  summaryText: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    marginBottom: 10,
   },
   completeContainer: {
     alignItems: 'center',
