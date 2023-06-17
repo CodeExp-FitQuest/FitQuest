@@ -65,8 +65,8 @@ const PushUpScreen = ({ navigation }) => {
           <CountDownToExercise countDown={countDown} />
           : (
           <View style={styles.displayContainer}>
-            {!isFinished ? 
-              <ExerciseCountDown timer={timer} handleFinish={handleFinish} /> 
+            {!isFinished
+              ? <ExerciseCountDown seconds={timer} handleFinish={handleFinish} /> 
               : <ExerciseComplete handleComplete={handleComplete} prompt={'Number of push ups performed'}/>
             }
           </View>
