@@ -45,6 +45,26 @@ const AppNavigator = () => {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="situp"
+        component={Screens.SitUpScreen}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="run"
+        component={Screens.RunScreen}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerTransparent: true,
+        }}
+      />
     </Stack.Navigator>
   );
 };
