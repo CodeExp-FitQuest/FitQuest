@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  StartExerciseButton,
+  StartExercisePrompt,
   CountDownToExercise,
   ExerciseCountDown,
   ExerciseComplete,
@@ -56,7 +56,11 @@ const PushUpScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {!isCountDown ? 
-        <StartExerciseButton handleStart={handleStart} />
+        <StartExercisePrompt 
+          heading={"Push up challenge"} 
+          subheading={"Perform 35 sit ups"} 
+          handleStart={handleStart} 
+        />
         : countDown > 0 ?
           <CountDownToExercise countDown={countDown} />
           : (
