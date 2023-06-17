@@ -35,6 +35,16 @@ const AppNavigator = () => {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="pushup"
+        component={Screens.PushUpScreen}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerTransparent: true,
+        }}
+      />
     </Stack.Navigator>
   );
 };
