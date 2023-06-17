@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 
-export const StartExerciseButton = ({handleStart}) => 
-  <TouchableOpacity style={styles.startButton} onPress={handleStart}>
-    <Text style={styles.buttonText}>Start</Text>
-  </TouchableOpacity>
+export const StartExercisePrompt = ({heading, subheading, handleStart}) => 
+  <View style={styles.startContainer}>
+    <Text style={styles.heading}>{heading}</Text>
+    <Text style={styles.subheading}>{subheading}</Text>
+    <TouchableOpacity style={styles.startButton} onPress={handleStart}>
+      <Text style={styles.buttonText}>Start</Text>
+    </TouchableOpacity>
+  </View>
 
 export const CountDownToExercise = ({countDown}) => 
   <View style={styles.countDownContainer}>
@@ -43,6 +47,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#FFFFFF',
     marginBottom: 10,
+  },
+  startContainer: {
+    alignItems: 'center',
+  },
+  heading: {
+    fontSize: 24,
+    color: '#FFFFFF',
+    marginBottom: 10,
+  },
+  subheading: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    marginBottom: 20,
   },
   startButton: {
     paddingVertical: 10,
