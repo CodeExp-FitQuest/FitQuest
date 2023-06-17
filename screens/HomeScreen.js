@@ -1,9 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  
+  const handleSignOut = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            console.log(`Signed out of ${user.email}`);
+          }
+        });
+        /*
+        let toast = Toast.show('You have signed out', {
+          duration: Toast.durations.SHORT,
+          backgroundColor: 'red',
+        });
+        
+        setTimeout(function hideToast() {
+          Toast.hide(toast);
+        }, 1500);
+        */
+        navigation.navigate("login");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -11,7 +39,7 @@ const HomeScreen = () => {
         <Text>I just created my first React App</Text>
         <TouchableOpacity
           style={styles.backbtn}
-          onPress={() => navigation.navigate("login")}
+          onPress={handleSignOut}
         >
           <Text>Click me</Text>
         </TouchableOpacity>
