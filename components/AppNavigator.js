@@ -1,14 +1,15 @@
 import React from "react";
 import * as Screens from "../screens/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { IconButton } from 'react-native-paper';
+import { IconButton } from "react-native-paper";
 
-const BackArrowNavigator = page => 
+const BackArrowNavigator = (page) => (
   <IconButton
     icon="arrow-left"
     onPress={() => navigation.navigate(page)}
     iconColor="#fff"
   />
+);
 
 const Stack = createNativeStackNavigator();
 
@@ -26,13 +27,15 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="signup"
+        component={Screens.SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="profile"
         component={Screens.ProfileScreen}
-        options={{ 
-          title: "",
-          headerShown: true,
-          headerLeft: () => <BackArrowNavigator page={"hometab"}/>,
-          headerTransparent: true,
+        options={{
+          headerShown: false
         }}
       />
       <Stack.Screen
