@@ -16,6 +16,11 @@ const AppNavigator = () => {
         component={Screens.HomeScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="signup"
+        component={Screens.SignupScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
