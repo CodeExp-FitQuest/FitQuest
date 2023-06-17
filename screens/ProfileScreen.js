@@ -11,7 +11,7 @@ import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const ChallengePanel = ({ title, description }) => {
+const ChallengePanel = ({ title, description, onPress }) => {
   return (
     <View style={styles.challengeRow}>
       <View style={styles.imageContainer}>
@@ -26,6 +26,9 @@ const ChallengePanel = ({ title, description }) => {
       <View style={styles.challengeInfo}>
         <Text style={styles.challengeTitle}>{title}</Text>
         <Text style={styles.challengeDescription}>{description}</Text>
+        <TouchableOpacity style={styles.challengeButton} onPress={onPress}>
+          <Text style={styles.challengeButtonText}>Start Challenge</Text>
+        </TouchableOpacity>
         {/* Progress bar goes here */}
       </View>
     </View>
@@ -96,14 +99,17 @@ const ProfileScreen = () => {
         <ChallengePanel
           title={"2.4KM Challenge"}
           description={"Finish 2.4KM under 15 minutes"}
+          onPress={() => navigation.navigate("run")}
         />
         <ChallengePanel
           title={"Sit Up Challenge"}
           description={"Perform 20 sit ups"}
+          onPress={() => navigation.navigate("situp")}
         />
         <ChallengePanel
           title={"Push Up Challenge"}
           description={"Perform 35 push ups"}
+          onPress={() => navigation.navigate("pushup")}
         />
       </View>
     </View>
@@ -161,11 +167,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "90%",
-    height: "60vh%",
+    height: "60%",
     borderRadius: 10,
     backgroundColor: "white",
     padding: 10,
-    marginBottom: "-6rem%",
+    marginBottom: -100,
   },
   challengeRow: {
     height: "15%",
@@ -208,6 +214,20 @@ const styles = StyleSheet.create({
   challengeDescription: {
     fontSize: 12,
     color: "black",
+  },
+  challengeButton: {
+    width: '50%',
+    textAlign: 'center',
+    backgroundColor: '#7D57C1',
+    borderRadius: 8,
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+    marginTop: 0,
+  },
+  challengeButtonText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 
