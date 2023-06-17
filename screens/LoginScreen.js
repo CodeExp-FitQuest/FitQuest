@@ -47,7 +47,7 @@ const LoginPage = () => {
           Toast.hide(toast);
         }, 1500);
         */
-        navigation.navigate("hometab");
+        navigation.navigate("profile");
       })
       .catch((error) => alert(error.message));
   };
@@ -56,7 +56,7 @@ const LoginPage = () => {
     const subscriber = auth.onAuthStateChanged((user) => {
       if (user) {
         setloggedIn(true);
-        navigation.navigate("hometab");
+        navigation.navigate("profile");
       }
     });
     return subscriber; // unsubscribe on unmount
