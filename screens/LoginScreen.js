@@ -4,15 +4,35 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Image,
   TextInput,
 } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 //import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
+const LogInImage = () => {
+  return (
+    <View style={styles.imageContainer}>
+      
+      <ImageBackground
+        source={require('../assets/login_image.jpg')} // Replace with your image path
+        style={styles.image}
+        resizeMode="cover"
+      >
+        <LinearGradient
+          colors={['rgba(0,0,0,0)', 'rgba(125,87,193,1)']}
+          style={styles.gradient}
+        />
+      </ ImageBackground>
+    </View>
+  );
+};
 
 const LoginPage = () => {
   const [user, setUser] = useState("");
@@ -22,31 +42,10 @@ const LoginPage = () => {
   const navigation = useNavigation();
 
   const handleClick = () => {
-    /*try {
-      await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken } = await GoogleSignin.signIn();
-      setloggedIn(true);
-      const credential = auth.GoogleAuthProvider.credential(
-        idToken,
-        accessToken
-      );
-      await auth().signInWithCredential(credential);
-    } catch (error) {
-      return alert(error.message);
-    }*/
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log(`Signed in with ${user.email}`);
-        /*let toast = Toast.show("Successfully signed in", {
-          duration: Toast.durations.SHORT,
-          backgroundColor: "green",
-        });
-        writeUserData(email, password);
-        setTimeout(function hideToast() {
-          Toast.hide(toast);
-        }, 1500);
-        */
         navigation.navigate("profile");
       })
       .catch((error) => alert(error.message));
@@ -62,27 +61,31 @@ const LoginPage = () => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
+
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
         <Text style={styles.header}>FitQuest</Text>
         <Text style={styles.subheader}>Earn rewards while working out</Text>
       </View>
+      <LogInImage />
       <View style={styles.inputs}>
         <View style={styles.inputContainer}>
           <TextInput
+            caretHidden={true}
             style={styles.inputText}
             placeholder="Email"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
             onChangeText={(email) => setEmail(email)}
             autoCorrect={false}
           />
         </View>
         <View style={styles.inputContainer}>
           <TextInput
+            caretHidden={true}
             style={styles.inputText}
             placeholder="Password"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
             secureTextEntry={true}
             autoCapitalize="none"
             autoCorrect={false}
@@ -95,15 +98,15 @@ const LoginPage = () => {
       </TouchableOpacity>
 
       <View style={styles.separator}>
-        <Text style={styles.separatorText}>
-          ___________Sign in with___________
-        </Text>
+        <View style={styles.line} />
+        <Text style={styles.separatorText}>Sign in with</Text>
+        <View style={styles.line} />
       </View>
 
       <View style={styles.socialMediaIcons}>
         <View style={styles.iconContainer}>
           <Image
-            style={{ width: 50, height: 50 }}
+            style={{ width: 40, height: 40 }}
             source={require(".././assets/Facebook-logo.png")}
           />
         </View>
@@ -111,14 +114,14 @@ const LoginPage = () => {
         <View style={styles.iconContainer}>
           <TouchableOpacity onPress={handleClick}>
             <Image
-              style={{ width: 60, height: 60 }}
+              style={{ width: 50, height: 50 }}
               source={require(".././assets/google.png")}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.iconContainer}>
           <Image
-            style={{ width: 40, height: 40 }}
+            style={{ width: 35, height: 35 }}
             source={require(".././assets/twitter.png")}
           />
         </View>
@@ -137,6 +140,25 @@ const LoginPage = () => {
 };
 
 const styles = StyleSheet.create({
+  imageContainer: {
+    top:'0',
+    width:'100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: -10,
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '100%',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
     backgroundColor: "#7D57C1",
@@ -145,75 +167,94 @@ const styles = StyleSheet.create({
   },
   subcontainer: {
     position: "absolute",
-    top: 130,
+    top: 250,
   },
   header: {
+    textAlign:"center",
     fontSize: 65,
     fontWeight: "bold",
     color: "white",
     marginBottom: 10,
   },
   subheader: {
+    textAlign:"center",
     fontSize: 17,
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "400",
   },
   inputContainer: {
-    backgroundColor: "#A3A3BD",
-    borderRadius: 15,
+    backgroundColor: "#9879CD",
+    borderRadius: 10,
     width: 250,
-    height: 50,
+    height: 38,
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   inputs: {
-    marginTop: 100,
+    marginTop: 50,
+  },
+  inputText: {
+    display:'flex',
+    flexDirection:'row',
+    outlineColor: 'transparent',
+    outlineWidth: '0',
+    color: 'white',
   },
   button: {
-    height: 50,
-    width: 100,
-    backgroundColor: "white",
+    display:'flex',
+    justifyContent:'center',
+    height: 38,
+    width: 250,
+    backgroundColor: "#6943AB",
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    marginTop: 5,
+    borderColor: "transparent",
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    elevation: 3,
   },
   buttonText: {
-    color: "black",
+    color: "white",
     textAlign: "center",
-    fontSize: 20,
-    fontWeight: "semibold",
+    fontSize: 15,
+    fontWeight: "400",
   },
   separator: {
+    width:'80%',
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: 35,
+    marginBottom: 25
+  },
+  line: {
+    width:'25%',
+    flex: 1, 
+    height: 1, 
+    backgroundColor: 'white', 
   },
   separatorText: {
     color: "white",
-    fontSize: 20,
+    fontSize: 15,
     paddingHorizontal: 10,
-    position: "absolute",
-    top: 30,
   },
   socialMediaIcons: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 20,
-    position: "absolute",
-    bottom: 80,
   },
   iconContainer: {
-    width: 80,
-    height: 80,
+    width: 65,
+    height: 65,
     borderRadius: 50,
     backgroundColor: "white",
-    marginTop: 80,
     marginHorizontal: 18,
+    marginBottom: 120,
     justifyContent: "center",
     alignItems: "center",
   },
