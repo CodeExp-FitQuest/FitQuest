@@ -140,12 +140,14 @@ const styles = StyleSheet.create({
     borderRadius: 70,
   },
   username: {
-    fontSize: 20,
+    fontSize: 30,
+    fontWeight:'bold',
     color: "white",
     marginTop: 10,
   },
   level: {
-    fontSize: 12,
+    fontSize: 15,
+    fontWeight:600,
     color: "white",
     marginTop: 5,
   },
@@ -181,7 +183,6 @@ const styles = StyleSheet.create({
     marginBottom: -100,
   },
   challengeRow: {
-    // border:'green dotted',
     height: "20%",
     flexDirection: "row",
     alignItems: "center",
@@ -189,12 +190,12 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   imageContainer: {
-    // border:'red dotted',
     alignItems: "center",
     justifyContent: "center",
   },
   challengeImage: {
-    border: "#5A2097 solid",
+    borderColor:'#5A2097',
+    borderWidth: 1,
     width: 90,
     height: 90,
     borderRadius: 50,
@@ -206,14 +207,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 2,
-  },
-  levelBadgeText: {
-    textAlign:'center',
-    fontSize: 10,
-    fontWeight:'bold',
-    width: 35,
-    color: "black",
-    borderRadius: 20,
     shadowColor: '#321254',
     shadowOffset: {
       width: 0,
@@ -222,6 +215,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 2,
     elevation: 3,
+  },
+  levelBadgeText: {
+    textAlign:'center',
+    fontSize: 10,
+    fontWeight:'bold',
+    width: 35,
+    color: "black",
+    borderRadius: 20,
+    
   },
   challengeInfo: {
     // border:'red dotted',
@@ -262,10 +264,11 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   challengeButtonText: {
+    paddingVertical: 3,
     fontSize: 12,
     fontWeight: 'bold',
     color: 'white',
-    
+    textAlign: 'center',
   },
   lineContainer: {
     display:'flex',
