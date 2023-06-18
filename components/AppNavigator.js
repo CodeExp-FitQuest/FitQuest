@@ -27,8 +27,11 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-<<<<<<< HEAD
-=======
+        name="signup"
+        component={Screens.SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="profile"
         component={Screens.ProfileScreen}
         options={{
@@ -36,10 +39,34 @@ const AppNavigator = () => {
         }}
       />
       <Stack.Screen
->>>>>>> main
-        name="signup"
-        component={Screens.SignupScreen}
-        options={{ headerShown: false }}
+        name="pushup"
+        component={Screens.PushUpScreen}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="situp"
+        component={Screens.SitUpScreen}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="run"
+        component={Screens.RunScreen}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerTransparent: true,
+        }}
       />
     </Stack.Navigator>
   );

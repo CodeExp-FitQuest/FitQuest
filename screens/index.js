@@ -1,17 +1,16 @@
 import HomeScreen from "./HomeScreen";
 import LoginScreen from "./LoginScreen";
-<<<<<<< HEAD
-=======
 import ProfileScreen from "./ProfileScreen";
->>>>>>> main
+import PushUpScreen from "./PushUpScreen";
+import SitUpScreen from "./SitUpScreen";
+import RunScreen from "./RunScreen";
 import SignupScreen from "./SignupScreen";
 export {
   HomeScreen,
   LoginScreen,
-<<<<<<< HEAD
   SignupScreen,
-=======
   ProfileScreen,
-  SignupScreen
->>>>>>> main
+  PushUpScreen,
+  SitUpScreen,
+  RunScreen,
 };

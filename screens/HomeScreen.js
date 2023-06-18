@@ -6,11 +6,7 @@ import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 const HomeScreen = () => {
   const navigation = useNavigation();
   
-<<<<<<< HEAD
-  const handleSignOut = () => {
-=======
   /*const handleSignOut = () => {
->>>>>>> main
     const auth = getAuth();
     signOut(auth)
       .then(() => {
@@ -19,11 +15,7 @@ const HomeScreen = () => {
             console.log(`Signed out of ${user.email}`);
           }
         });
-<<<<<<< HEAD
-        /*
-=======
         
->>>>>>> main
         let toast = Toast.show('You have signed out', {
           duration: Toast.durations.SHORT,
           backgroundColor: 'red',
@@ -32,21 +24,14 @@ const HomeScreen = () => {
         setTimeout(function hideToast() {
           Toast.hide(toast);
         }, 1500);
-<<<<<<< HEAD
-        */
-=======
         
->>>>>>> main
         navigation.navigate("login");
       })
       .catch((error) => {
         alert(error.message);
       });
   };
-<<<<<<< HEAD
-=======
   */
->>>>>>> main
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
