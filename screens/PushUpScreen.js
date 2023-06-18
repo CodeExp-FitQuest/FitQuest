@@ -58,7 +58,7 @@ const PushUpScreen = ({ navigation }) => {
       {!isCountDown ? 
         <StartExercisePrompt 
           heading={"Push up challenge"} 
-          subheading={"Perform 35 sit ups"} 
+          subheading={"Perform 35 push ups"} 
           handleStart={handleStart} 
         />
         : countDown > 0 ?
