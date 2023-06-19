@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { Camera, CameraType } from 'expo-camera';
 
 export const StartExercisePrompt = ({heading, subheading, handleStart}) => 
   <View style={styles.startContainer}>
@@ -16,8 +17,8 @@ export const CountDownToExercise = ({countDown}) =>
     <Text style={styles.countDownNumber}>{countDown}</Text>
   </View>
 
-export const ExerciseCountDown = ({minutes, seconds, handleFinish}) => 
-  <>
+export const ExerciseCountDown = ({minutes, seconds, handleFinish, hasPermission}) => 
+  <View style={styles.displayContainer}>
     <Text style={styles.timerText}>
       {minutes
         ? (`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`)
@@ -27,7 +28,7 @@ export const ExerciseCountDown = ({minutes, seconds, handleFinish}) =>
     <TouchableOpacity style={styles.finishButton} onPress={handleFinish}>
       <Text style={styles.buttonText}>Finish</Text>
     </TouchableOpacity>
-  </>
+  </View>
 
 export const ExerciseSummary = ({summary, handleComplete}) => 
   <View style={styles.summaryContainer}>
@@ -41,7 +42,7 @@ export const ExerciseComplete = ({handleComplete, prompt}) => {
   const [count, setCount] = useState('');
 
   return (
-    <View style={styles.completeContainer}>
+    <View style={styles.displayContainer}>
       <Text style={styles.text}>{prompt}</Text>
       <TextInput
         style={styles.input}
@@ -98,6 +99,18 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  cameraContainer: {
+    borderRadius: 1,
+    borderColor:'white',
+    width:'100%',
+    height:'50%',
+  },
+  camera: {
+    borderRadius: 1,
+    borderColor:'white',
+    width:'100%',
+    height:'50%',
+  },
   timerContainer: {
     alignItems: 'center',
   },
@@ -121,7 +134,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 10,
   },
-  completeContainer: {
+  displayContainer: {
     alignItems: 'center',
   },
   input: {
