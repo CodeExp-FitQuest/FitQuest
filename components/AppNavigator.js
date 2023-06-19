@@ -3,7 +3,7 @@ import * as Screens from "../screens/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { IconButton } from "react-native-paper";
 
-const BackArrowNavigator = (page) => (
+const BackArrowNavigator = ({page, navigation}) => (
   <IconButton
     icon="arrow-left"
     onPress={() => navigation.navigate(page)}
@@ -41,32 +41,32 @@ const AppNavigator = () => {
       <Stack.Screen
         name="pushup"
         component={Screens.PushUpScreen}
-        options={{ 
+        options={({ navigation }) => ({ 
           title: "",
           headerShown: true,
-          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
           headerTransparent: true,
-        }}
+        })}
       />
       <Stack.Screen
         name="situp"
         component={Screens.SitUpScreen}
-        options={{ 
+        options={({ navigation }) => ({ 
           title: "",
           headerShown: true,
-          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
           headerTransparent: true,
-        }}
+        })}
       />
       <Stack.Screen
         name="run"
         component={Screens.RunScreen}
-        options={{ 
+        options={({ navigation }) => ({ 
           title: "",
           headerShown: true,
-          headerLeft: () => <BackArrowNavigator page={"profile"}/>,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
           headerTransparent: true,
-        }}
+        })}
       />
     </Stack.Navigator>
   );
