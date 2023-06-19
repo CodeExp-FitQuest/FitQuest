@@ -194,8 +194,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   challengeImage: {
+<<<<<<< HEAD
     borderColor:'#5A2097',
     borderWidth: 1,
+=======
+    borderColor: "#5A2097",
+>>>>>>> 3b1c7a62 (Add Map screen)
     width: 90,
     height: 90,
     borderRadius: 50,

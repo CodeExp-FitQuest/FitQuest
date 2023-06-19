@@ -2,6 +2,7 @@ import React from "react";
 import * as Screens from "../screens/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { IconButton } from "react-native-paper";
+<<<<<<< HEAD
 
 const BackArrowNavigator = ({page, navigation}) => (
   <IconButton
@@ -10,10 +11,23 @@ const BackArrowNavigator = ({page, navigation}) => (
     iconColor="#fff"
   />
 );
+=======
+import { useNavigation } from "@react-navigation/native";
+>>>>>>> 3b1c7a62 (Add Map screen)
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
+  const navigation = useNavigation();
+
+  const BackArrowNavigator = (page) => (
+    <IconButton
+      icon="arrow-left"
+      onPress={() => navigation.navigate(page)}
+      iconColor="#fff"
+    />
+  );
+
   return (
     <Stack.Navigator>
       <Stack.Screen
