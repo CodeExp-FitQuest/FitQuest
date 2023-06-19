@@ -72,20 +72,20 @@ const LoginPage = () => {
       <View style={styles.inputs}>
         <View style={styles.inputContainer}>
           <TextInput
-            caretHidden={true}
             style={styles.inputText}
             placeholder="Email"
             placeholderTextColor="white"
+            selectionColor={'white'}
             onChangeText={(email) => setEmail(email)}
             autoCorrect={false}
           />
         </View>
         <View style={styles.inputContainer}>
           <TextInput
-            caretHidden={true}
             style={styles.inputText}
             placeholder="Password"
             placeholderTextColor="white"
+            selectionColor={'white'}
             secureTextEntry={true}
             autoCapitalize="none"
             autoCorrect={false}
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   subcontainer: {
     position: "absolute",
-    top: 250,
+    top: 300,
   },
   header: {
     textAlign:"center",
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     display:'flex',
     flexDirection:'row',
     outlineColor: 'transparent',
-    outlineWidth: '0',
+    outlineWidth: 0,
     color: 'white',
   },
   button: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "white",
     marginHorizontal: 18,
-    marginBottom: 120,
+    marginBottom: 200,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -6,12 +6,22 @@ import {
   ExerciseCountDown,
   ExerciseComplete,
 } from './components/ExerciseComponents';
+import { Camera, CameraType } from 'expo-camera';
 
 const SitUpScreen = ({ navigation }) => {
+  const [hasPermission, setHasPermission] = useState(false);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
   const [isCountDown, setIsCountDown] = useState(false);
-  const [countDown, setCountDown] = useState(5);
+  const [countDown, setCountDown] = useState(1);
   const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
   useEffect(() => {
     let countDownIntervalId;
@@ -46,10 +56,8 @@ const SitUpScreen = ({ navigation }) => {
 
   const handleFinish = () => setIsFinished(true);
 
-  const handleComplete = pushUpCount => {
-    // Send pushUpCount to backend and handle success
-    console.log(pushUpCount);
-
+  const handleComplete = sitUpCount => {
+    // Send sitUpCount to backend and handle success
     navigation.navigate('profile');
   };
 
@@ -63,14 +71,14 @@ const SitUpScreen = ({ navigation }) => {
         />
         : countDown > 0 ?
           <CountDownToExercise countDown={countDown} />
-          : (
-          <View style={styles.displayContainer}>
-            {!isFinished
-              ? <ExerciseCountDown seconds={timer} handleFinish={handleFinish} /> 
-              : <ExerciseComplete handleComplete={handleComplete} prompt={'Number of sit ups performed'}/>
-            }
-          </View>
-          )
+          : !isFinished
+            ? (
+              <>
+                <Camera style={styles.camera} type={CameraType.front}/>
+                <ExerciseCountDown seconds={timer} handleFinish={handleFinish} hasPermission={hasPermission}/> 
+              </>
+            )
+            : <ExerciseComplete handleComplete={handleComplete} prompt={'Number of sit ups performed'}/>
       }
     </View>
   );
@@ -83,9 +91,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  displayContainer: {
-    alignItems: 'center',
-  }
+  camera: {
+    borderRadius: 1,
+    borderColor:'white',
+    width:'100%',
+    height:'65%',
+    marginVertical: 20,
+  },
 });
 
 export default SitUpScreen;
