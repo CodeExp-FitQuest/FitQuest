@@ -14,7 +14,6 @@ const BackArrowNavigator = ({page, navigation}) => (
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-  const navigation = useNavigation();
 
   const BackArrowNavigator = (page) => (
     <IconButton

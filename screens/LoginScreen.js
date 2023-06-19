@@ -197,13 +197,8 @@ const styles = StyleSheet.create({
   inputText: {
     display:'flex',
     flexDirection:'row',
-<<<<<<< HEAD
     outlineColor: 'transparent',
     outlineWidth: 0,
-=======
-    //outlineColor: 'transparent',
-    //outlineWidth: '0px',
->>>>>>> 3b1c7a62 (Add Map screen)
     color: 'white',
   },
   button: {
