@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
 
 export const StartExercisePrompt = ({heading, subheading, handleStart}) => 
   <View style={styles.startContainer}>
@@ -17,7 +16,7 @@ export const CountDownToExercise = ({countDown}) =>
     <Text style={styles.countDownNumber}>{countDown}</Text>
   </View>
 
-export const ExerciseCountDown = ({minutes, seconds, handleFinish, hasPermission}) => 
+export const ExerciseCountDown = ({minutes, seconds, handleFinish}) => 
   <View style={styles.displayContainer}>
     <Text style={styles.timerText}>
       {minutes
