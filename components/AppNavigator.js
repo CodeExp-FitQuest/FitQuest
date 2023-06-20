@@ -77,6 +77,11 @@ const AppNavigator = () => {
           headerTransparent: true,
         })}
       />
+      <Stack.Screen
+        name="gps"
+        component={Screens.MapScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

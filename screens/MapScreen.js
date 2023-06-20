@@ -1,167 +1,169 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Platform,
-  PermissionsAndroid
-} from "react-native";
-import MapView, {
-  Marker,
-  AnimatedRegion,
-  Polyline,
-  PROVIDER_GOOGLE
-} from "react-native-maps";
-import haversine from "haversine";
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import MapView, { Marker, Polyline, AnimatedRegion } from "react-native-maps";
+import * as Location from "expo-location";
 
-// const LATITUDE = 29.95539;
-// const LONGITUDE = 78.07513;
-const LATITUDE_DELTA = 0.009;
-const LONGITUDE_DELTA = 0.009;
 const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
+const LATITUDE_DELTA = 0.005;
+const LONGITUDE_DELTA = 0.005;
 
-class AnimatedMarkers extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+export default function AnimatedMarkers() {
+  const [location, setLocation] = useState(null);
+  const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [distanceTravelled, setDistanceTravelled] = useState(0);
+  const coordinateRef = useRef(
+    new AnimatedRegion({
       latitude: LATITUDE,
       longitude: LONGITUDE,
-      routeCoordinates: [],
-      distanceTravelled: 0,
-      prevLatLng: {},
-      coordinate: new AnimatedRegion({
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: 0,
-        longitudeDelta: 0
-      })
-    };
-  }
+      latitudeDelta: 0,
+      longitudeDelta: 0,
+    })
+  );
 
-  componentDidMount() {
-    const { coordinate } = this.state;
+  useEffect(() => {
+    let isMounted = true;
+    let prevLatLng = null; // Add this line
 
-    this.watchID = navigator.geolocation.watchPosition(
-      position => {
-        const { routeCoordinates, distanceTravelled } = this.state;
-        const { latitude, longitude } = position.coords;
+    const updateLocation = (newLatLng) => {
+      if (isMounted) {
+        coordinateRef.current.timing(newLatLng).start();
+        setLocation(newLatLng);
+        setRouteCoordinates((prevCoordinates) => [...prevCoordinates, newLatLng]);
 
-        const newCoordinate = {
-          latitude,
-          longitude
-        };
-
-        if (Platform.OS === "android") {
-          if (this.marker) {
-            this.marker._component.animateMarkerToCoordinate(
-              newCoordinate,
-              500
-            );
-          }
-        } else {
-          coordinate.timing(newCoordinate).start();
+        if (prevLatLng) {
+          const distance = calculateDistance(
+            prevLatLng.latitude,
+            prevLatLng.longitude,
+            newLatLng.latitude,
+            newLatLng.longitude
+          );
+          setDistanceTravelled((prevDistance) => prevDistance + distance);
         }
 
-        this.setState({
-          latitude,
-          longitude,
-          routeCoordinates: routeCoordinates.concat([newCoordinate]),
-          distanceTravelled:
-            distanceTravelled + this.calcDistance(newCoordinate),
-          prevLatLng: newCoordinate
-        });
-      },
-      error => console.log(error),
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-        distanceFilter: 10
+        prevLatLng = newLatLng; // Update the previous location
       }
-    );
-  }
+    };
 
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID);
-  }
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Location permission not granted");
+        return;
+      }
 
-  getMapRegion = () => ({
-    latitude: this.state.latitude,
-    longitude: this.state.longitude,
+      const watchLocation = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 1000,
+          distanceInterval: 10,
+        },
+        (location) => {
+          const { latitude, longitude } = location.coords;
+          updateLocation({ latitude, longitude });
+        }
+      );
+
+      return () => {
+        isMounted = false;
+        watchLocation.remove();
+      };
+    })();
+  }, []);
+
+  const getMapRegion = () => ({
+    latitude: location?.latitude || LATITUDE,
+    longitude: location?.longitude || LONGITUDE,
     latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
+    longitudeDelta: LONGITUDE_DELTA,
   });
 
-  calcDistance = newLatLng => {
-    const { prevLatLng } = this.state;
-    return haversine(prevLatLng, newLatLng) || 0;
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance;
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
+  const deg2rad = (deg) => {
+    return deg * (Math.PI / 180);
+  };
+
+  return (
+    <View style={styles.container}>
+      {location ? (
         <MapView
           style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          showUserLocation
-          followUserLocation
+          provider={MapView.PROVIDER_GOOGLE}
+          showsUserLocation
+          followsUserLocation
           loadingEnabled
-          region={this.getMapRegion()}
+          region={getMapRegion()}
         >
-          <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
+          <Polyline
+            coordinates={routeCoordinates}
+            strokeWidth={5}
+            strokeColor="#00BFFF"
+          />
           <Marker.Animated
-            ref={marker => {
-              this.marker = marker;
-            }}
-            coordinate={this.state.coordinate}
+            coordinate={coordinateRef.current}
+            title="Your Location"
           />
         </MapView>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.bubble, styles.button]}>
-            <Text style={styles.bottomBarContent}>
-              {parseFloat(this.state.distanceTravelled).toFixed(2)} km
-            </Text>
-          </TouchableOpacity>
-        </View>
+      ) : (
+        <Text style={styles.loadingText}>Loading...</Text>
+      )}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={[styles.bubble, styles.button]}>
+          <Text style={styles.bottomBarContent}>
+            {parseFloat(distanceTravelled).toFixed(2)} km
+          </Text>
+        </TouchableOpacity>
       </View>
-    );
-  }
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
   map: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   bubble: {
-    flex: 1,
-    backgroundColor: "rgba(255,255,255,0.7)",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     paddingHorizontal: 18,
     paddingVertical: 12,
-    borderRadius: 20
+    borderRadius: 20,
   },
-  latlng: {
-    width: 200,
-    alignItems: "stretch"
+  buttonContainer: {
+    flexDirection: "row",
+    marginVertical: 20,
+    backgroundColor: "transparent",
   },
   button: {
     width: 80,
     paddingHorizontal: 12,
     alignItems: "center",
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    marginVertical: 20,
-    backgroundColor: "transparent"
-  }
+  bottomBarContent: {
+    fontSize: 16,
+    color: "#000",
+  },
+  loadingText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
 });
-
-export default AnimatedMarkers;
