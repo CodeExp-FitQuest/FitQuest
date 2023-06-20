@@ -9,7 +9,7 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
 
-export default function AnimatedMarkers({ minutes, seconds, handleFinish }) {
+export default function AnimatedMarkers({ minutes, seconds, handleFinish, setIsFinished, setDistance}) {
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [distanceTravelled, setDistanceTravelled] = useState(0);
@@ -43,6 +43,7 @@ export default function AnimatedMarkers({ minutes, seconds, handleFinish }) {
             newLatLng.longitude
           );
           setDistanceTravelled((prevDistance) => prevDistance + distance);
+          setDistance((prevDistance) => prevDistance + distance);
         }
 
         prevLatLng = newLatLng; // Update the previous location
@@ -125,20 +126,12 @@ export default function AnimatedMarkers({ minutes, seconds, handleFinish }) {
       ) : (
         <Text style={styles.loadingText}>Loading...</Text>
       )}
-      {/*
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.bubble, styles.button]}>
-          <Text style={styles.bottomBarContent}>
-            {parseFloat(distanceTravelled).toFixed(2)} km
-          </Text>
-        </TouchableOpacity>
-      </View>*/}
-
       <RunningCountDown
         minutes={minutes}
         seconds={seconds}
         handleFinish={handleFinish}
         distance={parseFloat(distanceTravelled).toFixed(2)}
+        setIsFinished={setIsFinished}
       />
     </View>
   );

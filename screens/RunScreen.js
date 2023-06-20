@@ -3,16 +3,16 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import {
   StartExercisePrompt,
   CountDownToExercise,
-  RunningCountDown,
   ExerciseSummary,
 } from "./components/ExerciseComponents";
 import AnimatedMarkers from "./MapScreen";
 
 const SitUpPage = ({ navigation }) => {
   const [isCountDown, setIsCountDown] = useState(false);
-  const [countDown, setCountDown] = useState(1);
-  const [minutes, setMinutes] = useState(5);
+  const [countDown, setCountDown] = useState(5);
+  const [minutes, setMinutes] = useState(15);
   const [seconds, setSeconds] = useState(0);
+  const [distance, setDistance] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const initialMinutes = useRef();
   const initialSeconds = useRef();
@@ -93,32 +93,24 @@ const SitUpPage = ({ navigation }) => {
         />
       ) : countDown > 0 ? (
         <CountDownToExercise countDown={countDown} />
+      ) : !isFinished ? (
+        <AnimatedMarkers
+          minutes={minutes}
+          seconds={seconds}
+          handleFinish={handleFinish}
+          setIsFinished={setIsFinished}
+          setDistance={setDistance}
+        />
       ) : (
-        !isFinished ? (
-          <AnimatedMarkers
-            minutes={minutes}
-            seconds={seconds}
-            handleFinish={handleFinish}
+        <View style={styles.timerContainer}>
+          <ExerciseSummary
+            summary={`You ran a distance of ${parseFloat(distance).toFixed(2)} under ${getRunningTime()}`}
+            handleComplete={handleComplete}
           />
-        ) : (
-          <View style={styles.timerContainer}>
-            {/* 
-            <AnimatedMarkers
-              minutes={minutes}
-              seconds={seconds}
-              handleFinish={handleFinish}
-            />
-            <RunningCountDown minutes={minutes} seconds={seconds} handleFinish={handleFinish} />
-            */}
-            <ExerciseSummary
-              summary={`Total time taken is ${getRunningTime()}`}
-              handleComplete={handleComplete}
-            />
-          </View>
-        )
+        </View>
       )}
     </View>
-  );  
+  );
 };
 
 const styles = StyleSheet.create({

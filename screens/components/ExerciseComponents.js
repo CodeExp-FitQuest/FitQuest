@@ -50,6 +50,7 @@ export const RunningCountDown = ({
   seconds,
   handleFinish,
   distance,
+  setIsFinished
 }) => (
   <View style={styles.runningContainer}>
     <Text style={styles.title}>Distance: </Text>
@@ -64,10 +65,14 @@ export const RunningCountDown = ({
           }`
         : seconds}
     </Text>
-
-    <TouchableOpacity style={styles.stopButton} onPress={handleFinish}>
-      <Text style={styles.button2Text}>| |</Text>
-    </TouchableOpacity>
+    {/*Adjustable conditional values*/}
+    {distance >= 2.40 && minutes >= 0 ? (
+      setIsFinished(true)
+    ) : (
+      <TouchableOpacity style={styles.stopButton} onPress={handleFinish}>
+        <Text style={styles.button2Text}>| |</Text>
+      </TouchableOpacity>
+    )}
   </View>
 );
 
@@ -114,14 +119,14 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     borderRadius: 10,
     top: 10,
-    left: 260,
+    left: "90%",
   },
   timer2Text: {
     fontSize: 30,
     fontWeight: "bold",
     alignSelf: "flex-end",
     right: 70,
-    bottom: 30
+    bottom: 30,
   },
   runningContainer: {
     justifyContent: "space-between",
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     position: "fixed",
-    bottom: 60,
+    bottom: 70,
     backgroundColor: "transparent",
   },
   button2Text: {
