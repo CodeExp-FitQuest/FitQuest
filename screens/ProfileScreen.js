@@ -1,13 +1,9 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Button,
-} from "react-native";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import { getAuth, signOut, onAuthStateChanged} from "firebase/auth";
+import { db } from "../firebase/firebase";
+import { doc, onSnapshot, collection } from "firebase/firestore";
+import Toast from "react-native-root-toast";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -33,6 +29,14 @@ const ChallengePanel = ({ title, description, onPress, image }) => {
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    const usersDocRef = doc(db, "users", getAuth().currentUser.uid);
+    onSnapshot(usersDocRef, (doc) => {
+      setUser(doc.data());
+    });
+  }, []);
 
   const handleSignOut = () => {
     const auth = getAuth();
@@ -43,7 +47,7 @@ const ProfileScreen = () => {
             console.log(`Signed out of ${user.email}`);
           }
         });
-        /*
+        
         let toast = Toast.show('You have signed out', {
           duration: Toast.durations.SHORT,
           backgroundColor: 'red',
@@ -52,7 +56,7 @@ const ProfileScreen = () => {
         setTimeout(function hideToast() {
           Toast.hide(toast);
         }, 1500);
-        */
+        
         navigation.navigate("login");
       })
       .catch((error) => {
@@ -70,7 +74,7 @@ const ProfileScreen = () => {
           style={styles.profilePicture}
         />
 
-        <Text style={styles.username}>Jonathan Tan</Text>
+        <Text style={styles.username}>{user ? user.fName : <ActivityIndicator/>}</Text>
         <Text style={styles.level}>Level 5</Text>
       </View>
 
