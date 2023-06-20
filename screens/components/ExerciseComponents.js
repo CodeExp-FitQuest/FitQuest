@@ -19,14 +19,19 @@ export const StartExercisePrompt = ({ heading, subheading, handleStart }) => (
 );
 
 export const CountDownToExercise = ({countDown, exerciseType}) => 
-  <View style={styles.countDownContainer}>
-    <Camera style={styles.countDownCamera} type={CameraType.front}/>
-    <View style={styles.countDownTextContainer}>
-      <Text style={styles.getIntoPositionText}>{`Get into ${exerciseType} position`}</Text>
-      <Text style={styles.countDownText}>Exercise starts in</Text>
-      <Text style={styles.countDownNumber}>{countDown}</Text>
+  exerciseType === 'running' ?
+  <View style={styles.runnigCountDownContainer}>
+    <Text style={styles.countDownText}>Exercise starts in</Text>
+    <Text style={styles.countDownNumber}>{countDown}</Text>
+  </View> :
+    <View style={styles.countDownContainer}>
+      {exerciseType !== 'running' && <Camera style={styles.countDownCamera} type={CameraType.front}/>}
+      <View style={styles.countDownTextContainer}>
+        <Text style={styles.getIntoPositionText}>{`Get into ${exerciseType} position`}</Text>
+        <Text style={styles.countDownText}>Exercise starts in</Text>
+        <Text style={styles.countDownNumber}>{countDown}</Text>
+      </View>
     </View>
-  </View>
 
 export const ExerciseCountDown = ({minutes, seconds, handleFinish}) => 
   <View style={styles.displayContainer}>
@@ -170,6 +175,13 @@ const styles = StyleSheet.create({
     color: "#7D57C1",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  runnigCountDownContainer: {
+    display:'flex',
+    justifyContent:'center',
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
   },
   countDownContainer: {
     height: '100%',
