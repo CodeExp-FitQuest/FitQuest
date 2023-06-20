@@ -11,22 +11,21 @@ import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const ChallengePanel = ({ title, description }) => {
+const ChallengePanel = ({ title, description, onPress, image }) => {
   return (
     <View style={styles.challengeRow}>
       <View style={styles.imageContainer}>
-        <Image
-          source={require("../assets/google.png")}
-          style={styles.challengeImage}
-        />
+        <Image source={image} style={styles.challengeImage} />
         <View style={styles.levelBadge}>
-          <Text style={styles.levelBadgeText}>Lvl.1</Text>
+          <Text style={styles.levelBadgeText}>Lvl.3</Text>
         </View>
       </View>
       <View style={styles.challengeInfo}>
         <Text style={styles.challengeTitle}>{title}</Text>
         <Text style={styles.challengeDescription}>{description}</Text>
-        {/* Progress bar goes here */}
+        <TouchableOpacity style={styles.challengeButton} onPress={onPress}>
+          <Text style={styles.challengeButtonText}>Start Challenge</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -62,22 +61,17 @@ const ProfileScreen = () => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.logout}
-        onPress={handleSignOut}
-      >
-        <MaterialIcons name="logout" size={24} 
-        color="black" 
-        right={10}/>
+      <TouchableOpacity style={styles.logout} onPress={handleSignOut}>
+        <MaterialIcons name="logout" size={24} color="black" right={10} />
       </TouchableOpacity>
       <View style={styles.profileContainer}>
         <Image
-          source={require("../assets/google.png")}
+          source={require("../assets/profile_image.png")}
           style={styles.profilePicture}
         />
 
-        <Text style={styles.username}>Happi Happi</Text>
-        <Text style={styles.level}>Level 1</Text>
+        <Text style={styles.username}>Jonathan Tan</Text>
+        <Text style={styles.level}>Level 5</Text>
       </View>
 
       <View style={styles.tabsContainer}>
@@ -96,15 +90,30 @@ const ProfileScreen = () => {
         <ChallengePanel
           title={"2.4KM Challenge"}
           description={"Finish 2.4KM under 15 minutes"}
+          onPress={() => navigation.navigate("run")}
+          image={require("../assets/run.jpg")}
         />
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+        </View>
         <ChallengePanel
           title={"Sit Up Challenge"}
-          description={"Perform 20 sit ups"}
+          description={"Perform 20 sit ups under 1 minute"}
+          onPress={() => navigation.navigate("situp")}
+          image={require("../assets/situp.jpg")}
         />
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+        </View>
         <ChallengePanel
           title={"Push Up Challenge"}
-          description={"Perform 35 push ups"}
+          description={"Perform 35 push ups under 1 minute"}
+          onPress={() => navigation.navigate("pushup")}
+          image={require("../assets/pushup.jpg")}
         />
+        <View style={styles.lineContainer}>
+          <View style={styles.line} />
+        </View>
       </View>
     </View>
   );
@@ -123,17 +132,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 130,
+    height: 130,
+    borderRadius: 70,
   },
   username: {
-    fontSize: 20,
+    fontSize: 30,
+    fontWeight: "bold",
     color: "white",
     marginTop: 10,
   },
   level: {
-    fontSize: 12,
+    fontSize: 15,
+    fontWeight: 600,
     color: "white",
     marginTop: 5,
   },
@@ -160,29 +171,31 @@ const styles = StyleSheet.create({
   cardContainer: {
     display: "flex",
     flexDirection: "column",
+    // alignItems:'center',
     width: "90%",
-    height: "60vh%",
+    height: "60%",
     borderRadius: 10,
     backgroundColor: "white",
     padding: 10,
-    marginBottom: "-6rem%",
+    marginBottom: -100,
   },
   challengeRow: {
-    height: "15%",
+    height: "20%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     margin: 8,
   },
   imageContainer: {
-    width: "20%",
     alignItems: "center",
     justifyContent: "center",
   },
   challengeImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    borderColor: "#5A2097",
+    borderWidth: 1,
+    width: 90,
+    height: 90,
+    borderRadius: 50,
   },
   levelBadge: {
     position: "absolute",
@@ -191,23 +204,77 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 2,
+    shadowColor: "#321254",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 2,
+    elevation: 3,
   },
   levelBadgeText: {
+    textAlign: "center",
     fontSize: 10,
+    fontWeight: "bold",
+    width: 35,
     color: "black",
+    borderRadius: 20,
   },
   challengeInfo: {
-    width: "80%",
+    // border:'red dotted',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    width: "70%",
     paddingLeft: 10,
   },
   challengeTitle: {
+    marginVertical: 0,
     fontSize: 14,
     fontWeight: "bold",
     color: "black",
   },
   challengeDescription: {
+    marginBottom: 8,
     fontSize: 12,
     color: "black",
+  },
+  challengeButton: {
+    marginVertical: 2,
+    width: "70%",
+    textAlign: "center",
+    backgroundColor: "#7D57C1",
+    borderRadius: 8,
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+    marginTop: 0,
+    shadowColor: "#321254",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  challengeButtonText: {
+    paddingVertical: 3,
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+  },
+  lineContainer: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+  },
+  line: {
+    height: 1,
+    width: "90%",
+    backgroundColor: "#F3F0F9",
   },
 });
 

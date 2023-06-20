@@ -3,7 +3,7 @@ import * as Screens from "../screens/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { IconButton } from "react-native-paper";
 
-const BackArrowNavigator = (page) => (
+const BackArrowNavigator = ({page, navigation}) => (
   <IconButton
     icon="arrow-left"
     onPress={() => navigation.navigate(page)}
@@ -14,6 +14,15 @@ const BackArrowNavigator = (page) => (
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
+
+  const BackArrowNavigator = (page) => (
+    <IconButton
+      icon="arrow-left"
+      onPress={() => navigation.navigate(page)}
+      iconColor="#fff"
+    />
+  );
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -27,8 +36,11 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-<<<<<<< HEAD
-=======
+        name="signup"
+        component={Screens.SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="profile"
         component={Screens.ProfileScreen}
         options={{
@@ -36,9 +48,38 @@ const AppNavigator = () => {
         }}
       />
       <Stack.Screen
->>>>>>> main
-        name="signup"
-        component={Screens.SignupScreen}
+        name="pushup"
+        component={Screens.PushUpScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
+      />
+      <Stack.Screen
+        name="situp"
+        component={Screens.SitUpScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
+      />
+      <Stack.Screen
+        name="run"
+        component={Screens.RunScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
+      />
+      <Stack.Screen
+        name="gps"
+        component={Screens.MapScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
