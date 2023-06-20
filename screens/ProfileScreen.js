@@ -144,11 +144,7 @@ const styles = StyleSheet.create({
   },
   level: {
     fontSize: 15,
-<<<<<<< HEAD
-    fontWeight:'600',
-=======
-    fontWeight: 600,
->>>>>>> 18b1fe368fbfad8e5e2bf5fb5b0a100ddbb912d0
+    fontWeight: "0.6",
     color: "white",
     marginTop: 5,
   },
@@ -175,7 +171,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     display: "flex",
     flexDirection: "column",
-    // alignItems:'center',
     width: "90%",
     height: "60%",
     borderRadius: 10,
@@ -226,7 +221,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   challengeInfo: {
-    // border:'red dotted',
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
