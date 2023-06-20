@@ -37,26 +37,78 @@ const calculateAngle = (shoulder, elbow, wrist) => {
 const PushUpScreen = ({ navigation }) => {
   const [pose, setPose] = useState(null);
   const [hasPermission, setHasPermission] = useState(false);
-  const [isCountDown, setIsCountDown] = useState(false);
+  const [hasStarted, sethasStarted] = useState(false);
   const [countDown, setCountDown] = useState(1);
   const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
-  const frame = React.useRef(null);
-  const prevPushUpPosition = React.useRef('up');
-  const pushUpCount = React.useRef(0);
+  const frame = useRef(null);
+  const prevPushUpPosition = useRef('up');
+  const pushUpCount = useRef(0);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+
+      await initialiseTensorflow();
+    })();
+    
+    return () => {
+      cancelAnimationFrame(frame.current);
+      tf.dispose();
+    }
+  }, []);
+
+  useEffect(() => {
+    let countDownIntervalId;
+    let timerIntervalId;
+
+    if (hasStarted) {
+      countDownIntervalId = setInterval(() => {
+        setCountDown(prevCountDown => prevCountDown - 1);
+      }, 1000);
+    }
+
+    if (countDown === 0) {
+      clearInterval(countDownIntervalId);
+
+      timerIntervalId = setInterval(() => {
+        setTimer(prevTimer => prevTimer - 1);
+      }, 1000);
+    }
+
+    if (timer === 0 || isFinished) {
+      clearInterval(timerIntervalId);
+      handleFinish();
+    }
+
+    return () => {
+      clearInterval(countDownIntervalId);
+      clearInterval(timerIntervalId);
+    };
+  }, [hasStarted, countDown, timer, isFinished]);
+
+  const handleStart = () => sethasStarted(true);
+
+  const handleFinish = () => setIsFinished(true);
+
+  const handleComplete = pushUpCount => {
+    // Send pushUpCount to backend and handle success
+    navigation.navigate('profile');
+  };
 
   let textureDims = { width: 1920, height: 1080 };
   if (Platform.OS === 'ios') {
-      textureDims = {
-        height: 1920,
-        width: 1080,
-      };
-    } else {
-      textureDims = {
-        height: 1200,
-        width: 1600,
-      };
-    }
+    textureDims = {
+      height: 1920,
+      width: 1080,
+    };
+  } else {
+    textureDims = {
+      height: 1200,
+      width: 1600,
+    };
+  }
 
   const estimatePoseOnImage = async (imageElement) => {
     let [leftShoulder, leftElbow, leftWrist] = [null, null, null];
@@ -129,69 +181,16 @@ const PushUpScreen = ({ navigation }) => {
     loop();
   }
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-
-      await initialiseTensorflow();
-    })();
-    
-    return () => {
-      cancelAnimationFrame(frame.current);
-      tf.dispose();
-    }
-  }, []);
-
-  useEffect(() => {
-    let countDownIntervalId;
-    let timerIntervalId;
-
-    if (isCountDown) {
-      countDownIntervalId = setInterval(() => {
-        setCountDown(prevCountDown => prevCountDown - 1);
-      }, 1000);
-    }
-
-    if (countDown === 0) {
-      clearInterval(countDownIntervalId);
-
-      timerIntervalId = setInterval(() => {
-        setTimer(prevTimer => prevTimer - 1);
-      }, 1000);
-    }
-
-    if (timer === 0 || isFinished) {
-      clearInterval(timerIntervalId);
-      handleFinish();
-    }
-
-    return () => {
-      clearInterval(countDownIntervalId);
-      clearInterval(timerIntervalId);
-    };
-  }, [isCountDown, countDown, timer, isFinished]);
-
-  const handleStart = () => setIsCountDown(true);
-
-  const handleFinish = () => setIsFinished(true);
-
-  const handleComplete = pushUpCount => {
-    // Send pushUpCount to backend and handle success
-    navigation.navigate('profile');
-  };
-
-
   return (
     <View style={styles.container}>
-      {!isCountDown ? 
+      {!hasStarted ? 
         <StartExercisePrompt 
           heading={"Push up challenge"} 
           subheading={"Perform 35 push ups"} 
           handleStart={handleStart} 
         />
         : countDown > 0 ?
-          <CountDownToExercise countDown={countDown} />
+          <CountDownToExercise countDown={countDown} exerciseType={'push up'}/>
           : !isFinished
             ? (
               <>
@@ -207,11 +206,11 @@ const PushUpScreen = ({ navigation }) => {
                   onReady={handleCameraStream}
                 />
                 <Text style={styles.pushUpCountText}>{pushUpCount.current}</Text>
-                <ExerciseCountDown seconds={timer} repCountText={`${pushUpCount}`} handleFinish={handleFinish}/> 
+                <ExerciseCountDown seconds={timer} handleFinish={handleFinish}/> 
               </>
             )
             : <ExerciseSummary 
-              summary={`You performed ${pushUpCount.current} in ${60 - timer} seconds`} 
+              summary={`You performed ${pushUpCount.current} push ups in ${60 - timer} seconds`} 
               handleComplete={handleComplete}
             />
       }
@@ -237,21 +236,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 0,
   },
-  modelResults: {
-    position:'absolute',
-    top:0,
-    left:0,
-    width:'100%',
-    height: '65%',
-    zIndex: 20,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 0,
-  },
   pushUpCountText: {
     position: 'absolute',
     top: 100,
-    zIndex: 10,
+    zIndex: 5,
     width:'100%',
     height: '100%',
     fontSize: 150,
