@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   level: {
     fontSize: 15,
-    fontWeight:600,
+    fontWeight:'600',
     color: "white",
     marginTop: 5,
   },
