@@ -2,13 +2,14 @@ import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker, Polyline, AnimatedRegion } from "react-native-maps";
 import * as Location from "expo-location";
+import { RunningCountDown } from "./components/ExerciseComponents";
 
 const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
 
-export default function AnimatedMarkers() {
+export default function AnimatedMarkers({ minutes, seconds, handleFinish }) {
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [distanceTravelled, setDistanceTravelled] = useState(0);
@@ -29,7 +30,10 @@ export default function AnimatedMarkers() {
       if (isMounted) {
         coordinateRef.current.timing(newLatLng).start();
         setLocation(newLatLng);
-        setRouteCoordinates((prevCoordinates) => [...prevCoordinates, newLatLng]);
+        setRouteCoordinates((prevCoordinates) => [
+          ...prevCoordinates,
+          newLatLng,
+        ]);
 
         if (prevLatLng) {
           const distance = calculateDistance(
@@ -121,13 +125,21 @@ export default function AnimatedMarkers() {
       ) : (
         <Text style={styles.loadingText}>Loading...</Text>
       )}
+      {/*
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.bubble, styles.button]}>
           <Text style={styles.bottomBarContent}>
             {parseFloat(distanceTravelled).toFixed(2)} km
           </Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
+
+      <RunningCountDown
+        minutes={minutes}
+        seconds={seconds}
+        handleFinish={handleFinish}
+        distance={parseFloat(distanceTravelled).toFixed(2)}
+      />
     </View>
   );
 }
@@ -140,6 +152,7 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    height: "85%"
   },
   bubble: {
     backgroundColor: "rgba(255, 255, 255, 0.7)",

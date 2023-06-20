@@ -90,7 +90,7 @@ const ProfileScreen = () => {
         <ChallengePanel
           title={"2.4KM Challenge"}
           description={"Finish 2.4KM under 15 minutes"}
-          onPress={() => navigation.navigate("gps")}
+          onPress={() => navigation.navigate("run")}
           image={require("../assets/run.jpg")}
         />
         <View style={styles.lineContainer}>
