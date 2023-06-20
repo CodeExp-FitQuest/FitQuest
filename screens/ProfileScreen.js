@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
   },
   level: {
     fontSize: 15,
-    fontWeight: "0.6",
     color: "white",
     marginTop: 5,
   },
