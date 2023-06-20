@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
   inputText: {
     display:'flex',
     flexDirection:'row',
-    outlineColor: 'transparent',
-    outlineWidth: 0,
+    //outlineColor: 'transparent',
+    //outlineWidth: 0,
     color: 'white',
   },
   button: {
