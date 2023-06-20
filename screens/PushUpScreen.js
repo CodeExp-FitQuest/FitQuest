@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Linking, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import Svg, { Circle, Rect, G, Line} from 'react-native-svg';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   StartExercisePrompt,
   CountDownToExercise,
   ExerciseCountDown,
-  ExerciseComplete,
+  ExerciseSummary,
 } from './components/ExerciseComponents';
 import { Camera, CameraType } from 'expo-camera';
 import * as tf from "@tensorflow/tfjs";
@@ -18,8 +17,6 @@ const TensorCamera = cameraWithTensors(Camera);
 
 const initialiseTensorflow = async () => {
   await tf.ready();
-  // tf.getBackend();
-  //  await posenet.load();
 }
 
 const isNull = item => item === null;
@@ -38,10 +35,8 @@ const calculateAngle = (shoulder, elbow, wrist) => {
 }
 
 const PushUpScreen = ({ navigation }) => {
-  // const [pushUpCount, setPushUpCount] = useState(0);
   const [pose, setPose] = useState(null);
   const [hasPermission, setHasPermission] = useState(false);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
   const [isCountDown, setIsCountDown] = useState(false);
   const [countDown, setCountDown] = useState(1);
   const [timer, setTimer] = useState(60);
@@ -96,65 +91,26 @@ const PushUpScreen = ({ navigation }) => {
       flipHorizontal: false,
     });
 
-      // let [rightP1, rightP2, rightP3] = [null, null, null];
-
     posenet.getAdjacentKeyPoints(pose.keypoints, 0.2).map(
       ([from, to], i) => {
-        // console.log("from")
-        // console.log(from.part);
-        // console.log(from.position);
-        // console.log("to")
-        // console.log(to.part);
-        // console.log(to.position);
-        // console.log("")
-        // console.log(`${from.part} to ${to.part}`);
         if (from.part === 'leftShoulder') {
           leftShoulder = from.position;
         } else if (from.part === 'leftElbow') {
           leftElbow = from.position;
           leftWrist = to.part === 'leftWrist' ? to.position : null;
         }
-        // } else if (from.part === 'rightShoulder') {
-        //   rightP1 = from.position;
-        // } else if (from.part === 'rightElbow') {
-        //   rightP2 = from.position;
-        //   rightP3 = to.part === 'rightWrist' ? to.position : null;
-        // }
       }
     );
-    console.log("___________________________________")
-
-    // console.log(leftShoulder);
-    // console.log(leftElbow);
-    // console.log(leftWrist);
-    // console.log("--");
-
-    // console.log(rightP1);
-    // console.log(rightP2);
-    // console.log(rightP3);
 
     if (!(isNull(leftShoulder) || isNull(leftElbow) || isNull(leftWrist))) {
-      // console.log("calculating left");
       const angle = calculateAngle(leftShoulder, leftElbow, leftWrist);
-      console.log("angle");
-      console.log(angle);
-
       pushUpPosition = angle < 90 ? 'down' : 'up';
     }
 
-    // if(!(isNull(rightP1) || isNull(rightP2) || isNull(rightP3))) {
-    //   console.log("calculating right");
-    //   console.log(calculateAngle(rightP1, rightP2, rightP3));
-    // }
-    // console.log(`${pushUpPosition} pushUpPosition`);
-    // console.log(`${currPushUpPosition} currPushUpPosition`);
-    // prevPushUpPosition.current === 'down' && pushUpPosition === 'up' && setPushUpCount(pushUpCount + 1);
     if (pushUpPosition && pushUpPosition !== prevPushUpPosition.current) { 
       if (prevPushUpPosition.current === 'down' && pushUpPosition === 'up') {
-        // console.log(`${pushUpCount.current + 1} pushUpCount`);
         pushUpCount.current = pushUpCount.current + 1;
       } 
-      // console.log(`SETTING CURRENT PUSH UP POSITION ${pushUpPosition} ${prevPushUpPosition.current}`);
       prevPushUpPosition.current = pushUpPosition;
     }
     
@@ -165,55 +121,12 @@ const PushUpScreen = ({ navigation }) => {
   const handleCameraStream = ( images ) => {
     const loop = async () => {
       const nextImageTensor = images.next().value;
-      const pose = await estimatePoseOnImage(nextImageTensor);
+      await estimatePoseOnImage(nextImageTensor);
 
       tf.dispose([nextImageTensor]);
       frame.current = requestAnimationFrame(loop);
     };
     loop();
-  }
-  console.log("test");
-  console.log(pushUpCount.current);
-
-  const renderPose = () => {
-    const MIN_KEYPOINT_SCORE = 0.2;
-    if (pose != null) {
-      const keypoints = pose.keypoints
-        .filter(k => k.score > MIN_KEYPOINT_SCORE)
-        .map((k,i) => {
-          return <Circle
-            key={`skeletonkp_${i}`}
-            cx={k.position.x}
-            cy={k.position.y}
-            r='6'
-            strokeWidth='0'
-            fill='blue'
-          />;
-        });
-
-      const adjacentKeypoints =
-        posenet.getAdjacentKeyPoints(pose.keypoints, MIN_KEYPOINT_SCORE);
-
-      const skeleton = adjacentKeypoints.map(([from, to], i) => {
-        return <Line
-          key={`skeletonls_${i}`}
-          x1={from.position.x}
-          y1={from.position.y}
-          x2={to.position.x}
-          y2={to.position.y}
-          stroke='magenta'
-          strokeWidth='4'
-        />;
-      });
-
-      return <Svg height='100%' width='100%'
-        viewBox={`0 0 ${textureDims.width} ${textureDims.height}`}>
-          {skeleton}
-          {keypoints}
-        </Svg>;
-    } else {
-      return null;
-    }
   }
 
   useEffect(() => {
@@ -229,12 +142,6 @@ const PushUpScreen = ({ navigation }) => {
       tf.dispose();
     }
   }, []);
-
-  // if (!hasPermission) {
-  //   requestPermission
-  //   const openSetting = async () => await Linking.openSettings();
-  //   openSetting();
-  // }
 
   useEffect(() => {
     let countDownIntervalId;
@@ -274,29 +181,10 @@ const PushUpScreen = ({ navigation }) => {
     navigation.navigate('profile');
   };
 
-  // console.log(permission)
 
   return (
-    // <View style={styles.cameraContainer}>
     <View style={styles.container}>
-      <TensorCamera 
-        style={styles.camera} 
-        type={CameraType.front}
-        resizeHeight={TENSOR_SIZE.height}
-        resizeWidth={TENSOR_SIZE.width}
-        resizeDepth={3}
-        autorender={false}
-        cameraTextureHeight={textureDims.height}
-        cameraTextureWidth={textureDims.width}  
-        onReady={handleCameraStream}
-      />
-      <View style={styles.modelResults}>
-        {renderPose()}
-      </View>
-      <Text style={styles.pushUpCountText}>{pushUpCount.current}</Text>
-
-
-      {/* {!isCountDown ? 
+      {!isCountDown ? 
         <StartExercisePrompt 
           heading={"Push up challenge"} 
           subheading={"Perform 35 push ups"} 
@@ -307,12 +195,26 @@ const PushUpScreen = ({ navigation }) => {
           : !isFinished
             ? (
               <>
-                <TensorCamera style={styles.camera} type={CameraType.front}/>
-                <ExerciseCountDown seconds={timer} handleFinish={handleFinish} hasPermission={hasPermission}/> 
+                <TensorCamera 
+                  style={styles.camera} 
+                  type={CameraType.front}
+                  resizeHeight={TENSOR_SIZE.height}
+                  resizeWidth={TENSOR_SIZE.width}
+                  resizeDepth={3}
+                  autorender={false}
+                  cameraTextureHeight={textureDims.height}
+                  cameraTextureWidth={textureDims.width}  
+                  onReady={handleCameraStream}
+                />
+                <Text style={styles.pushUpCountText}>{pushUpCount.current}</Text>
+                <ExerciseCountDown seconds={timer} repCountText={`${pushUpCount}`} handleFinish={handleFinish}/> 
               </>
             )
-            : <ExerciseComplete handleComplete={handleComplete} prompt={'Number of push ups performed'}/>
-      } */}
+            : <ExerciseSummary 
+              summary={`You performed ${pushUpCount.current} in ${60 - timer} seconds`} 
+              handleComplete={handleComplete}
+            />
+      }
     </View>
   );
 };
@@ -323,22 +225,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#7D57C1',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  // camera: {
-  //   borderRadius: 1,
-  //   borderColor:'white',
-  //   width:'100%',
-  //   height:'65%',
-  //   marginVertical: 20,
-  // },
-  cameraContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
   },
   camera : {
     position:'absolute',
@@ -363,15 +249,15 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
   pushUpCountText: {
-    position:'absolute',
+    position: 'absolute',
+    top: 100,
     zIndex: 10,
-    bottom: 0,
     width:'100%',
-    height: '30%',
-    fontSize: 40,
+    height: '100%',
+    fontSize: 150,
     textAlign: 'center',
     fontWeight: 'bold',
-    borderWidth: 2,
+    color: '#fff',
   }
 });
 
