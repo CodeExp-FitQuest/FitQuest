@@ -15,10 +15,7 @@ const ChallengePanel = ({ title, description, onPress, image }) => {
   return (
     <View style={styles.challengeRow}>
       <View style={styles.imageContainer}>
-        <Image
-          source={image}
-          style={styles.challengeImage}
-        />
+        <Image source={image} style={styles.challengeImage} />
         <View style={styles.levelBadge}>
           <Text style={styles.levelBadgeText}>Lvl.3</Text>
         </View>
@@ -65,7 +62,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.logout} onPress={handleSignOut}>
-        <MaterialIcons name="logout" size={24} color="black" right={10}/>
+        <MaterialIcons name="logout" size={24} color="black" right={10} />
       </TouchableOpacity>
       <View style={styles.profileContainer}>
         <Image
@@ -141,13 +138,13 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 30,
-    fontWeight:'bold',
+    fontWeight: "bold",
     color: "white",
     marginTop: 10,
   },
   level: {
     fontSize: 15,
-    fontWeight:600,
+    fontWeight: 600,
     color: "white",
     marginTop: 5,
   },
@@ -194,7 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   challengeImage: {
-    borderColor:'#5A2097',
+    borderColor: "#5A2097",
     borderWidth: 1,
     width: 90,
     height: 90,
@@ -207,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 2,
-    shadowColor: '#321254',
+    shadowColor: "#321254",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -217,20 +214,19 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   levelBadgeText: {
-    textAlign:'center',
+    textAlign: "center",
     fontSize: 10,
-    fontWeight:'bold',
+    fontWeight: "bold",
     width: 35,
     color: "black",
     borderRadius: 20,
-    
   },
   challengeInfo: {
     // border:'red dotted',
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
-    height:'100%',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
     width: "70%",
     paddingLeft: 10,
   },
@@ -247,14 +243,14 @@ const styles = StyleSheet.create({
   },
   challengeButton: {
     marginVertical: 2,
-    width: '70%',
-    textAlign: 'center',
-    backgroundColor: '#7D57C1',
+    width: "70%",
+    textAlign: "center",
+    backgroundColor: "#7D57C1",
     borderRadius: 8,
     paddingVertical: 2,
     paddingHorizontal: 4,
     marginTop: 0,
-    shadowColor: '#321254',
+    shadowColor: "#321254",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -266,19 +262,19 @@ const styles = StyleSheet.create({
   challengeButtonText: {
     paddingVertical: 3,
     fontSize: 12,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
   },
   lineContainer: {
-    display:'flex',
-    alignItems:'center',
-    width:'100%',
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
   },
   line: {
-    height:1,
-    width:'90%',
-    backgroundColor: '#F3F0F9', 
+    height: 1,
+    width: "90%",
+    backgroundColor: "#F3F0F9",
   },
 });
 

@@ -5,6 +5,7 @@ import PushUpScreen from "./PushUpScreen";
 import SitUpScreen from "./SitUpScreen";
 import RunScreen from "./RunScreen";
 import SignupScreen from "./SignupScreen";
+import MapScreen from "./MapScreen";
 export {
   HomeScreen,
   LoginScreen,
@@ -13,4 +14,5 @@ export {
   PushUpScreen,
   SitUpScreen,
   RunScreen,
+  MapScreen
 };
