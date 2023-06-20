@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { Camera, CameraType } from 'expo-camera';
 
 export const StartExercisePrompt = ({heading, subheading, handleStart}) => 
   <View style={styles.startContainer}>
@@ -10,10 +11,14 @@ export const StartExercisePrompt = ({heading, subheading, handleStart}) =>
     </TouchableOpacity>
   </View>
 
-export const CountDownToExercise = ({countDown}) => 
+export const CountDownToExercise = ({countDown, exerciseType}) => 
   <View style={styles.countDownContainer}>
-    <Text style={styles.countDownText}>Exercise starts in</Text>
-    <Text style={styles.countDownNumber}>{countDown}</Text>
+    <Camera style={styles.countDownCamera} type={CameraType.front}/>
+    <View style={styles.countDownTextContainer}>
+      <Text style={styles.getIntoPositionText}>{`Get into ${exerciseType} position`}</Text>
+      <Text style={styles.countDownText}>Exercise starts in</Text>
+      <Text style={styles.countDownNumber}>{countDown}</Text>
+    </View>
   </View>
 
 export const ExerciseCountDown = ({minutes, seconds, handleFinish}) => 
@@ -86,7 +91,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   countDownContainer: {
+    height: '100%',
+    width: '100%',
     alignItems: 'center',
+  },
+  countDownCamera : {
+    position:'absolute',
+    top:0,
+    left:0,
+    width:'100%',
+    height: '65%',
+    zIndex: 1,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 0,
+  },
+  countDownTextContainer: {
+    zIndex: 10,
+    position: 'absolute',
+    bottom: 0,
+    height: '30%',
+    alignItems: 'center',
+  },
+  getIntoPositionText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 5,
   },
   countDownText: {
     fontSize: 24,
@@ -134,6 +165,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   displayContainer: {
+    zIndex: 10,
+    position: 'absolute',
+    bottom: 0,
+    height: '30%',
     alignItems: 'center',
   },
   input: {
