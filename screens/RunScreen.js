@@ -92,7 +92,7 @@ const SitUpPage = ({ navigation }) => {
           handleStart={handleStart}
         />
       ) : countDown > 0 ? (
-        <CountDownToExercise countDown={countDown} />
+        <CountDownToExercise countDown={countDown} exerciseType={'running'}/>
       ) : !isFinished ? (
         <AnimatedMarkers
           minutes={minutes}

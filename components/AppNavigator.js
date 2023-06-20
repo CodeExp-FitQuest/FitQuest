@@ -14,15 +14,6 @@ const BackArrowNavigator = ({page, navigation}) => (
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-
-  const BackArrowNavigator = (page) => (
-    <IconButton
-      icon="arrow-left"
-      onPress={() => navigation.navigate(page)}
-      iconColor="#fff"
-    />
-  );
-
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -80,7 +71,12 @@ const AppNavigator = () => {
       <Stack.Screen
         name="gps"
         component={Screens.MapScreen}
-        options={{ headerShown: false }}
+        options={{ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        }}
       />
     </Stack.Navigator>
   );
