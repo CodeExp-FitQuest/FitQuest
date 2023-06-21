@@ -19,7 +19,7 @@ const ChallengePanel = ({ title, description, onPress, image }) => {
       <View style={styles.challengeInfo}>
         <Text style={styles.challengeTitle}>{title}</Text>
         <Text style={styles.challengeDescription}>{description}</Text>
-        <TouchableOpacity style={styles.challengeButton} onPress={onPress}>
+        <TouchableOpacity style={styles.challengeButton} onPress={(onPress)}>
           <Text style={styles.challengeButtonText}>Start Challenge</Text>
         </TouchableOpacity>
       </View>
@@ -80,14 +80,14 @@ const ProfileScreen = () => {
 
       <View style={styles.tabsContainer}>
         <View style={styles.tab}>
-          <Text style={styles.tabText}>Record</Text>
+          <Text style={styles.tabText}>Leaderboard</Text>
         </View>
         <View style={styles.tab}>
-          <Text style={styles.tabText}>Statistics</Text>
+          <Text style={styles.tabText}>Accomplishment</Text>
         </View>
-        <View style={styles.tab}>
+        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate("friend")}>
           <Text style={styles.tabText}>Friends</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.cardContainer}>

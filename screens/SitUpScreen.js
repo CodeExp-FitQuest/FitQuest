@@ -21,13 +21,13 @@ const initialiseTensorflow = async () => {
 
 const isNull = item => item === null;
 
-const calculateAngle = (shoulder, elbow, wrist) => {
-  const shoulderToElbowVector = [elbow.x - shoulder.x, elbow.y - shoulder.y];
-  const wristToElbowVector = [elbow.x - wrist.x, elbow.y - wrist.y];
-  const dotProduct = shoulderToElbowVector[0] * wristToElbowVector[0] + shoulderToElbowVector[1] * wristToElbowVector[1];
-  const shoulderToElbowMagnitude = Math.sqrt(shoulderToElbowVector[0] * shoulderToElbowVector[0] + shoulderToElbowVector[1] * shoulderToElbowVector[1]);
-  const wristToElbowMagnitude = Math.sqrt(wristToElbowVector[0] * wristToElbowVector[0] + wristToElbowVector[1] * wristToElbowVector[1]);
-  const cosineAngle = dotProduct / (shoulderToElbowMagnitude * wristToElbowMagnitude);
+const calculateAngle = (shoulder, hip, knee) => {
+  const shoulderToHipVector = [hip.x - shoulder.x, hip.y - shoulder.y];
+  const kneeToHipVector = [hip.x - knee.x, hip.y - knee.y];
+  const dotProduct = shoulderToHipVector[0] * kneeToHipVector[0] + shoulderToHipVector[1] * kneeToHipVector[1];
+  const shoulderToHipMagnitude = Math.sqrt(shoulderToHipVector[0] * shoulderToHipVector[0] + shoulderToHipVector[1] * shoulderToHipVector[1]);
+  const kneeToHipMagnitude = Math.sqrt(kneeToHipVector[0] * kneeToHipVector[0] + kneeToHipVector[1] * kneeToHipVector[1]);
+  const cosineAngle = dotProduct / (shoulderToHipMagnitude * kneeToHipMagnitude);
   const angleRadians = Math.acos(cosineAngle);
   const angleDegrees = angleRadians * (180 / Math.PI);
 
@@ -42,7 +42,7 @@ const SitUpScreen = ({ navigation }) => {
   const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
   const frame = useRef(null);
-  const prevSitUpPosition = useRef('up');
+  const prevSitUpPosition = useRef('down');
   const sitUpCount = useRef(0);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const SitUpScreen = ({ navigation }) => {
   }
 
   const estimatePoseOnImage = async (imageElement) => {
-    let [leftShoulder, leftElbow, leftWrist] = [null, null, null];
+    let [leftShoulder, leftHip, leftKnee] = [null, null, null];
     let sitUpPosition = null;
     const net = await posenet.load({
       // Can be either `MobileNetV1` or `ResNet50`. It determines which PoseNet architecture to load.
@@ -147,20 +147,21 @@ const SitUpScreen = ({ navigation }) => {
       ([from, to], i) => {
         if (from.part === 'leftShoulder') {
           leftShoulder = from.position;
-        } else if (from.part === 'leftElbow') {
-          leftElbow = from.position;
-          leftWrist = to.part === 'leftWrist' ? to.position : null;
+        } else if (from.part === 'leftHip') {
+          leftHip = from.position;
+          leftKnee = to.part === 'leftKnee' ? to.position : null;
         }
       }
     );
 
-    if (!(isNull(leftShoulder) || isNull(leftElbow) || isNull(leftWrist))) {
-      const angle = calculateAngle(leftShoulder, leftElbow, leftWrist);
-      sitUpPosition = angle < 90 ? 'down' : 'up';
+    if (!(isNull(leftShoulder) || isNull(leftHip) || isNull(leftKnee))) {
+      const angle = calculateAngle(leftShoulder, leftHip, leftKnee);
+      console.log(angle);
+      sitUpPosition = angle < 60 ? 'up' : 'down';
     }
 
     if (sitUpPosition && sitUpPosition !== prevSitUpPosition.current) { 
-      if (prevSitUpPosition.current === 'down' && sitUpPosition === 'up') {
+      if (prevSitUpPosition.current === 'up' && sitUpPosition === 'down') {
         sitUpCount.current = sitUpCount.current + 1;
       } 
       prevSitUpPosition.current = sitUpPosition;

@@ -71,12 +71,22 @@ const AppNavigator = () => {
       <Stack.Screen
         name="gps"
         component={Screens.MapScreen}
-        options={{ 
+        options={({ navigation }) => ({ 
           title: "",
           headerShown: true,
           headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
           headerTransparent: true,
-        }}
+        })}
+      />
+      <Stack.Screen
+        name="friend"
+        component={Screens.FriendScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
       />
     </Stack.Navigator>
   );
