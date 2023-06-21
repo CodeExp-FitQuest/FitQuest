@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
-import { getAuth, signOut, onAuthStateChanged} from "firebase/auth";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { db } from "../firebase/firebase";
 import { doc, onSnapshot, collection } from "firebase/firestore";
 import Toast from "react-native-root-toast";
@@ -19,7 +26,7 @@ const ChallengePanel = ({ title, description, onPress, image }) => {
       <View style={styles.challengeInfo}>
         <Text style={styles.challengeTitle}>{title}</Text>
         <Text style={styles.challengeDescription}>{description}</Text>
-        <TouchableOpacity style={styles.challengeButton} onPress={(onPress)}>
+        <TouchableOpacity style={styles.challengeButton} onPress={onPress}>
           <Text style={styles.challengeButtonText}>Start Challenge</Text>
         </TouchableOpacity>
       </View>
@@ -35,6 +42,14 @@ const ProfileScreen = () => {
     const usersDocRef = doc(db, "users", getAuth().currentUser.uid);
     onSnapshot(usersDocRef, (doc) => {
       setUser(doc.data());
+
+      let toast = Toast.show(`Welcome ${doc.data().fName}`, {
+        duration: Toast.durations.SHORT,
+        backgroundColor: "green",
+      });
+      setTimeout(function hideToast() {
+        Toast.hide(toast);
+      }, 1500);
     });
   }, []);
 
@@ -47,16 +62,16 @@ const ProfileScreen = () => {
             console.log(`Signed out of ${user.email}`);
           }
         });
-        
-        let toast = Toast.show('You have signed out', {
+
+        let toast = Toast.show("You have signed out", {
           duration: Toast.durations.SHORT,
-          backgroundColor: 'red',
+          backgroundColor: "red",
         });
-        
+
         setTimeout(function hideToast() {
           Toast.hide(toast);
         }, 1500);
-        
+
         navigation.navigate("login");
       })
       .catch((error) => {
@@ -74,18 +89,29 @@ const ProfileScreen = () => {
           style={styles.profilePicture}
         />
 
-        <Text style={styles.username}>{user ? user.fName : <ActivityIndicator/>}</Text>
+        <Text style={styles.username}>
+          {user ? user.fName : <ActivityIndicator />}
+        </Text>
         <Text style={styles.level}>Level 5</Text>
       </View>
 
       <View style={styles.tabsContainer}>
-        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate("leaderboard")}>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => navigation.navigate("leaderboard")}
+        >
           <Text style={styles.tabText}>Leaderboard</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate("achievement")}>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => navigation.navigate("achievement")}
+        >
           <Text style={styles.tabText}>Achievement</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate("friend")}>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => navigation.navigate("friend")}
+        >
           <Text style={styles.tabText}>Friends</Text>
         </TouchableOpacity>
       </View>
