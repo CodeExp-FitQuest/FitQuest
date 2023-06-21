@@ -79,12 +79,12 @@ const ProfileScreen = () => {
       </View>
 
       <View style={styles.tabsContainer}>
-        <View style={styles.tab}>
+        <TouchableOpacity style={styles.tab}>
           <Text style={styles.tabText}>Leaderboard</Text>
-        </View>
-        <View style={styles.tab}>
-          <Text style={styles.tabText}>Accomplishment</Text>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate("achievement")}>
+          <Text style={styles.tabText}>Achievement</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate("friend")}>
           <Text style={styles.tabText}>Friends</Text>
         </TouchableOpacity>

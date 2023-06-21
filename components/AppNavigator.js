@@ -88,6 +88,16 @@ const AppNavigator = () => {
           headerTransparent: true,
         })}
       />
+      <Stack.Screen
+        name="achievement"
+        component={Screens.AchievementScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
+      />
     </Stack.Navigator>
   );
 };
