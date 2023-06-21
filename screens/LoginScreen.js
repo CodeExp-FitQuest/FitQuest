@@ -141,7 +141,6 @@ const LoginPage = () => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    top:'0',
     width:'100%',
     flex: 1,
     justifyContent: 'center',
@@ -197,8 +196,6 @@ const styles = StyleSheet.create({
   inputText: {
     display:'flex',
     flexDirection:'row',
-    outlineColor: 'transparent',
-    outlineWidth: 0,
     color: 'white',
   },
   button: {
