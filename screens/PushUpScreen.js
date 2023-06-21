@@ -38,8 +38,8 @@ const PushUpScreen = ({ navigation }) => {
   const [pose, setPose] = useState(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [hasStarted, sethasStarted] = useState(false);
-  const [countDown, setCountDown] = useState(1);
-  const [timer, setTimer] = useState(6000);
+  const [countDown, setCountDown] = useState(10);
+  const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
   const frame = useRef(null);
   const prevPushUpPosition = useRef('up');
@@ -137,7 +137,7 @@ const PushUpScreen = ({ navigation }) => {
       // It is the float multiplier for the depth (number of channels) for all convolution ops. 
       // The larger the value, the larger the size of the layers, and more accurate the model at the cost of speed. 
       // Set this to a smaller value to increase speed at the cost of accuracy.
-      multiplier: 0.5
+      multiplier: 0.75
     });
     const pose = await net.estimateSinglePose(imageElement, {
       flipHorizontal: false,
@@ -156,12 +156,15 @@ const PushUpScreen = ({ navigation }) => {
 
     if (!(isNull(leftShoulder) || isNull(leftElbow) || isNull(leftWrist))) {
       const angle = calculateAngle(leftShoulder, leftElbow, leftWrist);
-      pushUpPosition = angle < 90 ? 'down' : 'up';
+      console.log(`angle: ${angle}`);
+
+      pushUpPosition = angle < 105 ? 'down' : 'up';
     }
 
     if (pushUpPosition && pushUpPosition !== prevPushUpPosition.current) { 
       if (prevPushUpPosition.current === 'down' && pushUpPosition === 'up') {
         pushUpCount.current = pushUpCount.current + 1;
+        console.log(pushUpCount.current)
       } 
       prevPushUpPosition.current = pushUpPosition;
     }
@@ -186,7 +189,7 @@ const PushUpScreen = ({ navigation }) => {
       {!hasStarted ? 
         <StartExercisePrompt 
           heading={"Push up challenge"} 
-          subheading={"Perform 35 push ups"} 
+          subheading={"Perform 35 push ups under 60 seconds"} 
           handleStart={handleStart} 
         />
         : countDown > 0 ?
