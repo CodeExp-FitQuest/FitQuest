@@ -38,7 +38,7 @@ const SitUpScreen = ({ navigation }) => {
   const [pose, setPose] = useState(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [countDown, setCountDown] = useState(1);
+  const [countDown, setCountDown] = useState(10);
   const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
   const frame = useRef(null);
@@ -196,7 +196,7 @@ const SitUpScreen = ({ navigation }) => {
       {!hasStarted ? 
         <StartExercisePrompt 
           heading={"Sit up challenge"} 
-          subheading={"Perform 20 sit ups"} 
+          subheading={"Perform 20 sit ups under 60 seconds"} 
           handleStart={handleStart} 
         />
         : countDown > 0 ?
