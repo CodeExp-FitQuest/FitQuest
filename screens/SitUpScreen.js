@@ -138,10 +138,10 @@ const SitUpScreen = ({ navigation }) => {
       // The larger the value, the larger the size of the layers, and more accurate the model at the cost of speed. 
       // Set this to a smaller value to increase speed at the cost of accuracy.
       multiplier: 0.75
-    });
+    }).catch((err) => err);
     const pose = await net.estimateSinglePose(imageElement, {
       flipHorizontal: false,
-    });
+    }).catch((err) => err);
 
     posenet.getAdjacentKeyPoints(pose.keypoints, 0.2).map(
       ([from, to], i) => {
@@ -183,7 +183,7 @@ const SitUpScreen = ({ navigation }) => {
   const handleCameraStream = ( images ) => {
     const loop = async () => {
       const nextImageTensor = images.next().value;
-      await estimatePoseOnImage(nextImageTensor);
+      await estimatePoseOnImage(nextImageTensor).catch((err) => err);
 
       tf.dispose([nextImageTensor]);
       frame.current = requestAnimationFrame(loop);
