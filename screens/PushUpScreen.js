@@ -39,7 +39,7 @@ const PushUpScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [hasStarted, sethasStarted] = useState(false);
   const [countDown, setCountDown] = useState(1);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(6000);
   const [isFinished, setIsFinished] = useState(false);
   const frame = useRef(null);
   const prevPushUpPosition = useRef('up');
@@ -126,7 +126,7 @@ const PushUpScreen = ({ navigation }) => {
       // - `4`. 4 bytes per float (no quantization). Leads to highest accuracy and original model size (~90MB).
       // - `2`. 2 bytes per float. Leads to slightly lower accuracy and 2x model size reduction (~45MB).
       // - `1`. 1 byte per float. Leads to lower accuracy and 4x model size reduction (~22MB).
-      quantBytes: 4,
+      quantBytes: 2,
       // A `number` or an `Object` of type `{width: number, height: number}`. Defaults to `257.` 
       // It specifies the size the image is resized and padded to before it is fed into the PoseNet model. 
       // The larger the value, the more accurate the model at the cost of speed. Set this to a smaller value to increase speed at the cost of accuracy. 
@@ -137,7 +137,7 @@ const PushUpScreen = ({ navigation }) => {
       // It is the float multiplier for the depth (number of channels) for all convolution ops. 
       // The larger the value, the larger the size of the layers, and more accurate the model at the cost of speed. 
       // Set this to a smaller value to increase speed at the cost of accuracy.
-      multiplier: 0.75
+      multiplier: 0.5
     });
     const pose = await net.estimateSinglePose(imageElement, {
       flipHorizontal: false,
