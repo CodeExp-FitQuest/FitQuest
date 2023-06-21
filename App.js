@@ -16,7 +16,6 @@ export default function App() {
       </LocationProvider>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

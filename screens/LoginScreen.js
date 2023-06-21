@@ -13,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebase/firebase";
 import { auth } from "../firebase/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
-import Toast from "react-native-root-toast";
 import { signInWithEmailAndPassword } from "firebase/auth";
 //import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
@@ -47,13 +46,6 @@ const LoginPage = () => {
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log(`Signed in with ${user.email}`);
-        let toast = Toast.show(`Welcome ${existingUser.fName}`, {
-          duration: Toast.durations.SHORT,
-          backgroundColor: "green",
-        });
-        setTimeout(function hideToast() {
-          Toast.hide(toast);
-        }, 1500);
         navigation.navigate("profile");
       })
       .catch((error) => alert(error.message));
