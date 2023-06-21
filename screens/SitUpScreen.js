@@ -126,7 +126,7 @@ const SitUpScreen = ({ navigation }) => {
       // - `4`. 4 bytes per float (no quantization). Leads to highest accuracy and original model size (~90MB).
       // - `2`. 2 bytes per float. Leads to slightly lower accuracy and 2x model size reduction (~45MB).
       // - `1`. 1 byte per float. Leads to lower accuracy and 4x model size reduction (~22MB).
-      quantBytes: 4,
+      quantBytes: 2,
       // A `number` or an `Object` of type `{width: number, height: number}`. Defaults to `257.` 
       // It specifies the size the image is resized and padded to before it is fed into the PoseNet model. 
       // The larger the value, the more accurate the model at the cost of speed. Set this to a smaller value to increase speed at the cost of accuracy. 
@@ -149,13 +149,23 @@ const SitUpScreen = ({ navigation }) => {
           leftShoulder = from.position;
         } else if (from.part === 'leftHip') {
           leftHip = from.position;
-          leftKnee = to.part === 'leftKnee' ? to.position : null;
+          leftKnee = 
+            to.part === 'leftKnee' ? 
+              to.position : 
+              leftKnee ? 
+                leftKnee : 
+                null;
         }
       }
     );
 
+    // console.log(`left shoulder: ${leftShoulder}`);
+    // console.log(`left Hip: ${leftHip}`);
+    // console.log(`left Knee: ${leftKnee}`);
+    // console.log("---------")
     if (!(isNull(leftShoulder) || isNull(leftHip) || isNull(leftKnee))) {
       const angle = calculateAngle(leftShoulder, leftHip, leftKnee);
+      console.log(`angle: ${angle}`);
       sitUpPosition = angle < 60 ? 'up' : 'down';
     }
 
