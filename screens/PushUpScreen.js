@@ -38,7 +38,7 @@ const PushUpScreen = ({ navigation }) => {
   const [pose, setPose] = useState(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [hasStarted, sethasStarted] = useState(false);
-  const [countDown, setCountDown] = useState(0);
+  const [countDown, setCountDown] = useState(10);
   const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
   const frame = useRef(null);
