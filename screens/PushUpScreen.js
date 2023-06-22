@@ -38,7 +38,7 @@ const PushUpScreen = ({ navigation }) => {
   const [pose, setPose] = useState(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [hasStarted, sethasStarted] = useState(false);
-  const [countDown, setCountDown] = useState(1);
+  const [countDown, setCountDown] = useState(10);
   const [timer, setTimer] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
   const frame = useRef(null);
@@ -126,7 +126,7 @@ const PushUpScreen = ({ navigation }) => {
       // - `4`. 4 bytes per float (no quantization). Leads to highest accuracy and original model size (~90MB).
       // - `2`. 2 bytes per float. Leads to slightly lower accuracy and 2x model size reduction (~45MB).
       // - `1`. 1 byte per float. Leads to lower accuracy and 4x model size reduction (~22MB).
-      quantBytes: 4,
+      quantBytes: 2,
       // A `number` or an `Object` of type `{width: number, height: number}`. Defaults to `257.` 
       // It specifies the size the image is resized and padded to before it is fed into the PoseNet model. 
       // The larger the value, the more accurate the model at the cost of speed. Set this to a smaller value to increase speed at the cost of accuracy. 
@@ -138,10 +138,10 @@ const PushUpScreen = ({ navigation }) => {
       // The larger the value, the larger the size of the layers, and more accurate the model at the cost of speed. 
       // Set this to a smaller value to increase speed at the cost of accuracy.
       multiplier: 0.75
-    });
+    }).catch((err) => err);
     const pose = await net.estimateSinglePose(imageElement, {
       flipHorizontal: false,
-    });
+    }).catch((err) => err);
 
     posenet.getAdjacentKeyPoints(pose.keypoints, 0.2).map(
       ([from, to], i) => {
@@ -156,12 +156,15 @@ const PushUpScreen = ({ navigation }) => {
 
     if (!(isNull(leftShoulder) || isNull(leftElbow) || isNull(leftWrist))) {
       const angle = calculateAngle(leftShoulder, leftElbow, leftWrist);
-      pushUpPosition = angle < 90 ? 'down' : 'up';
+      console.log(`angle: ${angle}`);
+
+      pushUpPosition = angle < 105 ? 'down' : 'up';
     }
 
     if (pushUpPosition && pushUpPosition !== prevPushUpPosition.current) { 
       if (prevPushUpPosition.current === 'down' && pushUpPosition === 'up') {
         pushUpCount.current = pushUpCount.current + 1;
+        console.log(pushUpCount.current)
       } 
       prevPushUpPosition.current = pushUpPosition;
     }
@@ -173,7 +176,7 @@ const PushUpScreen = ({ navigation }) => {
   const handleCameraStream = ( images ) => {
     const loop = async () => {
       const nextImageTensor = images.next().value;
-      await estimatePoseOnImage(nextImageTensor);
+      await estimatePoseOnImage(nextImageTensor).catch((err) => err);
 
       tf.dispose([nextImageTensor]);
       frame.current = requestAnimationFrame(loop);
@@ -186,7 +189,7 @@ const PushUpScreen = ({ navigation }) => {
       {!hasStarted ? 
         <StartExercisePrompt 
           heading={"Push up challenge"} 
-          subheading={"Perform 35 push ups"} 
+          subheading={"Perform 35 push ups under 60 seconds"} 
           handleStart={handleStart} 
         />
         : countDown > 0 ?

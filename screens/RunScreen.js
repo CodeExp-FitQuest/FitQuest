@@ -12,7 +12,7 @@ const SitUpPage = ({ navigation }) => {
   const [countDown, setCountDown] = useState(5);
   const [minutes, setMinutes] = useState(15);
   const [seconds, setSeconds] = useState(0);
-  const [distance, setDistance] = useState(0);
+  const [distance, setDistance] = useState(2.35);
   const [isFinished, setIsFinished] = useState(false);
   const initialMinutes = useRef();
   const initialSeconds = useRef();
