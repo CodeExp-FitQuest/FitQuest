@@ -43,16 +43,6 @@ const ProfileScreen = () => {
             console.log(`Signed out of ${user.email}`);
           }
         });
-        /*
-        let toast = Toast.show('You have signed out', {
-          duration: Toast.durations.SHORT,
-          backgroundColor: 'red',
-        });
-        
-        setTimeout(function hideToast() {
-          Toast.hide(toast);
-        }, 1500);
-        */
         navigation.navigate("login");
       })
       .catch((error) => {

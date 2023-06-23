@@ -156,15 +156,12 @@ const PushUpScreen = ({ navigation }) => {
 
     if (!(isNull(leftShoulder) || isNull(leftElbow) || isNull(leftWrist))) {
       const angle = calculateAngle(leftShoulder, leftElbow, leftWrist);
-      console.log(`angle: ${angle}`);
-
       pushUpPosition = angle < 105 ? 'down' : 'up';
     }
 
     if (pushUpPosition && pushUpPosition !== prevPushUpPosition.current) { 
       if (prevPushUpPosition.current === 'down' && pushUpPosition === 'up') {
         pushUpCount.current = pushUpCount.current + 1;
-        console.log(pushUpCount.current)
       } 
       prevPushUpPosition.current = pushUpPosition;
     }

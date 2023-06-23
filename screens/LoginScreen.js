@@ -14,14 +14,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-//import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const LogInImage = () => {
   return (
     <View style={styles.imageContainer}>
       
       <ImageBackground
-        source={require('../assets/login_image.jpg')} // Replace with your image path
+        source={require('../assets/login_image.jpg')}
         style={styles.image}
         resizeMode="cover"
       >
