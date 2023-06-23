@@ -12,7 +12,7 @@ const LONGITUDE_DELTA = 0.005;
 export default function AnimatedMarkers({ minutes, seconds, handleFinish, setIsFinished, setDistance}) {
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [distanceTravelled, setDistanceTravelled] = useState(0);
+  const [distanceTravelled, setDistanceTravelled] = useState(2.35);
   const coordinateRef = useRef(
     new AnimatedRegion({
       latitude: LATITUDE,
