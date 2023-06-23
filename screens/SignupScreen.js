@@ -12,24 +12,11 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-/*import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  sendEmailVerification,
-} from "firebase/auth";
-import { authentication, db } from "../firebase/firebase";
 import {
-  collection,
-  getDocs,
-  orderBy,
-  doc,
-  query,
-  updateDoc,
-  addDoc,
-  serverTimestamp,
-  deleteDoc,
-  setDoc,
-} from "firebase/firestore";*/
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { auth, db } from "../firebase/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const SignupScreen = () => {
   const navigation = useNavigation();
@@ -102,34 +89,33 @@ const SignupScreen = () => {
     );
   };
 
-  /*
-    const handleSignup = () => {
-      //const auth = getAuth();
-      if (checkValid() && validatePassword()) {
-          sendEmailVerification(auth.currentUser).then(() => {
-            Alert.alert("Email verification sent!");
+  const handleSignup = () => {
+
+    if (checkValid() && validatePassword()) {
+      /*
+      sendEmailVerification(auth.currentUser).then(() => {
+        Alert.alert("Email verification sent!");
+      });
+      */
+      createUserWithEmailAndPassword(auth , email, password)
+        .then(async (userCredentials) => {
+          const user = userCredentials.user;
+          await setDoc(doc(db, "users", user.uid), {
+            email: email,
+            fName: firstName,
+            lName: lastName,
+            phoneNum: phoneNum,
+          }).catch((error) => {
+            console.log(error);
           });
-  
-        createUserWithEmailAndPassword(authentication, email, password)
-          .then(async (userCredentials) => {
-            const user = userCredentials.user;
-            await setDoc(doc(db, "users", user.uid), {
-              email: email,
-              fName: firstName,
-              lName: lastName,
-              phoneNum: phoneNum,
-            }).catch((error) => {
-              console.log(error);
-            });
-            //writeUserData();
-            navigation.navigate("login");
-          })
-          .catch((error) => alert(error.message));
-      } else {
-        Alert.alert("Error", "Please enter valid information");
-      }
-    };
-    */
+          navigation.navigate("login");
+        })
+        .catch((error) => alert(error.message));
+    } else {
+      Alert.alert("Error", "Please enter valid information");
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -206,7 +192,7 @@ const SignupScreen = () => {
             />
           </View>
           {error1 && <Text style={styles.error}>{error1}</Text>}
-          <TouchableOpacity style={styles.signupbutton} >
+          <TouchableOpacity style={styles.signupbutton} onPress={handleSignup}>
             <Text style={styles.signuptext}>SIGN UP</Text>
           </TouchableOpacity>
         </View>
@@ -218,11 +204,12 @@ const SignupScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#7D57C1",
     justifyContent: "center",
     alignItems: "center",
   },
   inputContainer: {
-    backgroundColor: "#A3A3BD",
+    backgroundColor: "#9879CD",
     borderRadius: 15,
     width: 270,
     height: 50,

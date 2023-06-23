@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   Image,
   TouchableOpacity,
-  Button,
+  ActivityIndicator,
 } from "react-native";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { db } from "../firebase/firebase";
+import { doc, onSnapshot, collection } from "firebase/firestore";
+import Toast from "react-native-root-toast";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -33,6 +36,22 @@ const ChallengePanel = ({ title, description, onPress, image }) => {
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    const usersDocRef = doc(db, "users", getAuth().currentUser.uid);
+    onSnapshot(usersDocRef, (doc) => {
+      setUser(doc.data());
+
+      let toast = Toast.show(`Welcome ${doc.data().fName}`, {
+        duration: Toast.durations.SHORT,
+        backgroundColor: "green",
+      });
+      setTimeout(function hideToast() {
+        Toast.hide(toast);
+      }, 1500);
+    });
+  }, []);
 
   const handleSignOut = () => {
     const auth = getAuth();
@@ -43,6 +62,16 @@ const ProfileScreen = () => {
             console.log(`Signed out of ${user.email}`);
           }
         });
+
+        let toast = Toast.show("You have signed out", {
+          duration: Toast.durations.SHORT,
+          backgroundColor: "red",
+        });
+
+        setTimeout(function hideToast() {
+          Toast.hide(toast);
+        }, 1500);
+
         navigation.navigate("login");
       })
       .catch((error) => {
@@ -60,20 +89,31 @@ const ProfileScreen = () => {
           style={styles.profilePicture}
         />
 
-        <Text style={styles.username}>Jonathan Tan</Text>
+        <Text style={styles.username}>
+          {user ? user.fName : <ActivityIndicator />}
+        </Text>
         <Text style={styles.level}>Level 5</Text>
       </View>
 
       <View style={styles.tabsContainer}>
-        <View style={styles.tab}>
-          <Text style={styles.tabText}>Record</Text>
-        </View>
-        <View style={styles.tab}>
-          <Text style={styles.tabText}>Statistics</Text>
-        </View>
-        <View style={styles.tab}>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => navigation.navigate("leaderboard")}
+        >
+          <Text style={styles.tabText}>Leaderboard</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => navigation.navigate("achievement")}
+        >
+          <Text style={styles.tabText}>Achievement</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tab}
+          onPress={() => navigation.navigate("friend")}
+        >
           <Text style={styles.tabText}>Friends</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.cardContainer}>

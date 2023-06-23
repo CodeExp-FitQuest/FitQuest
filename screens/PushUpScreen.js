@@ -162,6 +162,7 @@ const PushUpScreen = ({ navigation }) => {
     if (pushUpPosition && pushUpPosition !== prevPushUpPosition.current) { 
       if (prevPushUpPosition.current === 'down' && pushUpPosition === 'up') {
         pushUpCount.current = pushUpCount.current + 1;
+        console.log(pushUpCount.current)
       } 
       prevPushUpPosition.current = pushUpPosition;
     }

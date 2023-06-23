@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyDSR6QLKH4YvbSCb-9qpciBYV21DKaevj8",
   authDomain: "fitquest-5d76b.firebaseapp.com",
@@ -13,5 +14,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+const resetPassword = sendPasswordResetEmail;
+
 //const provider = new GoogleAuthProvider();
-export {auth};
+export {auth, db, resetPassword};

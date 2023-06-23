@@ -22,11 +22,6 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="hometab"
-        component={Screens.HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="signup"
         component={Screens.SignupScreen}
         options={{ headerShown: false }}
@@ -71,12 +66,42 @@ const AppNavigator = () => {
       <Stack.Screen
         name="gps"
         component={Screens.MapScreen}
-        options={{ 
+        options={({ navigation }) => ({ 
           title: "",
           headerShown: true,
           headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
           headerTransparent: true,
-        }}
+        })}
+      />
+      <Stack.Screen
+        name="friend"
+        component={Screens.FriendScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
+      />
+      <Stack.Screen
+        name="achievement"
+        component={Screens.AchievementScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
+      />
+      <Stack.Screen
+        name="leaderboard"
+        component={Screens.LeaderboardScreen}
+        options={({ navigation }) => ({ 
+          title: "",
+          headerShown: true,
+          headerLeft: () => <BackArrowNavigator page={"profile"} navigation={navigation}/>,
+          headerTransparent: true,
+        })}
       />
     </Stack.Navigator>
   );

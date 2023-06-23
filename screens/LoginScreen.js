@@ -5,36 +5,36 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Image,
   TextInput,
 } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { db } from "../firebase/firebase";
 import { auth } from "../firebase/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 const LogInImage = () => {
   return (
     <View style={styles.imageContainer}>
-      
       <ImageBackground
         source={require('../assets/login_image.jpg')}
         style={styles.image}
         resizeMode="cover"
       >
         <LinearGradient
-          colors={['rgba(0,0,0,0)', 'rgba(125,87,193,1)']}
+          colors={["rgba(0,0,0,0)", "rgba(125,87,193,1)"]}
           style={styles.gradient}
         />
-      </ ImageBackground>
+      </ImageBackground>
     </View>
   );
 };
 
 const LoginPage = () => {
   const [user, setUser] = useState("");
+  const [existingUser, setExistingUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setloggedIn] = useState(false);
@@ -54,12 +54,17 @@ const LoginPage = () => {
     const subscriber = auth.onAuthStateChanged((user) => {
       if (user) {
         setloggedIn(true);
-        navigation.navigate("profile");
+        const usersDocRef = doc(db, "users", user.uid);
+        onSnapshot(usersDocRef, (doc) => {
+          if (doc.exists()) {
+            setExistingUser(doc.data());
+          }
+        });
       }
     });
+
     return subscriber; // unsubscribe on unmount
   }, []);
-
 
   return (
     <View style={styles.container}>
@@ -74,7 +79,7 @@ const LoginPage = () => {
             style={styles.inputText}
             placeholder="Email"
             placeholderTextColor="white"
-            selectionColor={'white'}
+            selectionColor={"white"}
             onChangeText={(email) => setEmail(email)}
             autoCorrect={false}
           />
@@ -84,7 +89,7 @@ const LoginPage = () => {
             style={styles.inputText}
             placeholder="Password"
             placeholderTextColor="white"
-            selectionColor={'white'}
+            selectionColor={"white"}
             secureTextEntry={true}
             autoCapitalize="none"
             autoCorrect={false}
@@ -142,20 +147,20 @@ const styles = StyleSheet.create({
   imageContainer: {
     width:'100%',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: -10,
   },
   gradient: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    height: '100%',
+    height: "100%",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   container: {
     flex: 1,
@@ -168,14 +173,14 @@ const styles = StyleSheet.create({
     top: 300,
   },
   header: {
-    textAlign:"center",
+    textAlign: "center",
     fontSize: 65,
     fontWeight: "bold",
     color: "white",
     marginBottom: 10,
   },
   subheader: {
-    textAlign:"center",
+    textAlign: "center",
     fontSize: 17,
     color: "white",
     fontWeight: "400",
@@ -198,15 +203,15 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {
-    display:'flex',
-    justifyContent:'center',
+    display: "flex",
+    justifyContent: "center",
     height: 38,
     width: 250,
     backgroundColor: "#6943AB",
     borderRadius: 30,
     borderWidth: 2,
     borderColor: "transparent",
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -222,18 +227,18 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   separator: {
-    width:'80%',
+    width: "80%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 35,
-    marginBottom: 25
+    marginBottom: 25,
   },
   line: {
-    width:'25%',
-    flex: 1, 
-    height: 1, 
-    backgroundColor: 'white', 
+    width: "25%",
+    flex: 1,
+    height: 1,
+    backgroundColor: "white",
   },
   separatorText: {
     color: "white",
