@@ -156,8 +156,6 @@ const PushUpScreen = ({ navigation }) => {
 
     if (!(isNull(leftShoulder) || isNull(leftElbow) || isNull(leftWrist))) {
       const angle = calculateAngle(leftShoulder, leftElbow, leftWrist);
-      console.log(`angle: ${angle}`);
-
       pushUpPosition = angle < 105 ? 'down' : 'up';
     }
 

@@ -14,13 +14,12 @@ import { db } from "../firebase/firebase";
 import { auth } from "../firebase/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
-//import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const LogInImage = () => {
   return (
     <View style={styles.imageContainer}>
       <ImageBackground
-        source={require("../assets/login_image.jpg")} // Replace with your image path
+        source={require('../assets/login_image.jpg')}
         style={styles.image}
         resizeMode="cover"
       >
@@ -146,8 +145,7 @@ const LoginPage = () => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    top: 0,
-    width: "100%",
+    width:'100%',
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -200,11 +198,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   inputText: {
-    display: "flex",
-    flexDirection: "row",
-    //outlineColor: 'transparent',
-    //outlineWidth: 0,
-    color: "white",
+    display:'flex',
+    flexDirection:'row',
+    color: 'white',
   },
   button: {
     display: "flex",

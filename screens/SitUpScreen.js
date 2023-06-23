@@ -159,10 +159,6 @@ const SitUpScreen = ({ navigation }) => {
       }
     );
 
-    // console.log(`left shoulder: ${leftShoulder}`);
-    // console.log(`left Hip: ${leftHip}`);
-    // console.log(`left Knee: ${leftKnee}`);
-    // console.log("---------")
     if (!(isNull(leftShoulder) || isNull(leftHip) || isNull(leftKnee))) {
       const angle = calculateAngle(leftShoulder, leftHip, leftKnee);
       console.log(`angle: ${angle}`);
