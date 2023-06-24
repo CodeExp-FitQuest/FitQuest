@@ -18,12 +18,12 @@ The government attempted to fix this issue by implementing monetary incentive to
 | Pass with incentive | $200 |
 
 While this helped to improve IPPT passing rate, military personnel now only trains just before the test for the reward and idle for the rest of the year.
-This is an issue as servicemen should remain physically fit consistently throughout the year to be ready for any threats.
+This is an issue as servicemen should train consistently throughout the year and remain physically fit to be ready for any threats.
 
 ## Solution
 FitQuest attempts to break down the challenge of IPPT and its monetary reward into smaller objectives with incentives proportional to their difficulties that are achievable throughout the year.
 Users start off with an easy challenge for a minimal reward, say 10 push ups, 10 sit ups, and finish a 2.4km run in under 15 minutes for a reward of $50. 
-He levels up if he completes these tasks. For the next month, the challenge increases in difficult and so does the reward. This approach not only makes fitness fun but also 
+He levels up if he completes these tasks. For the following month, the challenge increases in difficult and so does the reward. This approach not only makes fitness fun but also 
 consistent and progressive where military personnel can be rewarded for staying fit.
 
 ## Key Features
@@ -32,4 +32,26 @@ consistent and progressive where military personnel can be rewarded for staying 
 This means that challenges can be completed not just at the track and gym but at your local neighborhood and home as well.
 - Level Progression and Rewards: As users improve their fitness performance, they advance through different levels within the app,
 unlocking exclusive rewards and earning money based on specific level tiers.
+
+## How to do challenges
+
+### Dynamic Challenge (Running)
+1. Log into account
+2. Click on `Start Challenge` for 2.4km challenge 
+3. Click on `Start` button below challenge prompt
+4. Wait for count down and prepare for exercise
+5. Finish 2.4km run before timer reaches 0 to complete challenge
+
+https://github.com/CodeExp-FitQuest/FitQuest/assets/38004268/6db685c9-77d1-4238-8829-779d44d534ae
+
+### Static Challenge (Push up/Sit up)
+1. Log into account
+2. Click on `Start Challenge` for static challenge 
+3. Click on `Start` button below challenge prompt
+4. Wait for count down and get into position
+    1. Push up requires camera to capture the view of your arm throughout exercise
+    2. Sit up requires camera to capture the view of your shoulder and knee throughout exercise
+6. Perform the number of repetitions given by challenge before 60 seconds to complete challenge 
+
+https://github.com/CodeExp-FitQuest/FitQuest/assets/38004268/e0eaecf9-3d65-49b5-a02b-2560cf99589b
 
